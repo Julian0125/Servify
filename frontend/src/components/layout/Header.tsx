@@ -17,9 +17,15 @@ export function Header() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
         <div className="flex lg:flex-1">
           <a href="/" className="flex items-center gap-2 -m-1.5 p-1.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600">
-              <Wrench className="h-6 w-6 text-white" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="Servify"
+              className="h-10 w-10 rounded-lg object-cover"
+              onError={(e) => {
+                const target = e.currentTarget as HTMLImageElement
+                if (target.src.indexOf('/logo.svg') === -1) target.src = '/logo.svg'
+              }}
+            />
             <span className="text-xl font-bold text-gray-900">Servify</span>
           </a>
         </div>
