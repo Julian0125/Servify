@@ -11,15 +11,6 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Wrench, Zap, Paintbrush, GraduationCap, Home, Camera, Code, Scissors
 }
 
-const locations = [
-  'Todas las zonas',
-  'Bucaramanga Centro',
-  'Cabecera',
-  'San Alonso',
-  'Floridablanca',
-  'Giron',
-  'Piedecuesta',
-]
 
 interface ServiceCategoriesProps {
   categories: Category[]
@@ -30,7 +21,6 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [liveResults, setLiveResults] = useState<Professional[]>([])
-  const [showResults, setShowResults] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<number | null>(null)
   const borderClass = 'border-blue-500'
   const [allProfessionals, setAllProfessionals] = useState<Professional[]>([])
@@ -68,11 +58,7 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
     return m ? parseFloat(m[0]) : Number.POSITIVE_INFINITY
   }
 
-  const handleCategoryClick = (categoryId: string) => {
-    const newCategory = selectedCategory === categoryId ? null : categoryId
-    setSelectedCategory(newCategory)
-    onSearch(searchQuery, '', newCategory || '')
-  }
+  // category selection handled elsewhere if needed
 
   const handleSearch = () => {
     onSearch(searchQuery, '', selectedCategory || '')
@@ -107,7 +93,6 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
               onChange={(e) => {
                 const v = e.target.value
                 setSearchQuery(v)
-                setShowResults(!!v)
 
                 // debounce API calls
                 if (debounceTimer) window.clearTimeout(debounceTimer)
@@ -124,12 +109,12 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
                 }, 250)
                 setDebounceTimer(t)
               }}
-              onKeyDown={(e) => e.key === 'Enter' && (setShowResults(false), handleSearch())}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
               {searchQuery && (
                 <button
                   aria-label="Borrar búsqueda"
-                  onClick={() => { setSearchQuery(''); setLiveResults([]); setShowResults(false); inputRef.current?.focus(); }}
+                  onClick={() => { setSearchQuery(''); setLiveResults([]); inputRef.current?.focus(); }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-all duration-150 ease-in-out hover:scale-110 hover:text-gray-800 hover:animate-pulse"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform transition-transform duration-200 hover:rotate-90" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
@@ -205,7 +190,7 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
                 <div
                   key={p.id}
                   className={`rounded-xl bg-white p-6 border ${borderClass} shadow-md transition hover:shadow-xl hover:scale-[1.01]`}
-                  onMouseDown={(ev) => { ev.preventDefault(); setSearchQuery(p.name); setShowResults(false); onSearch(p.name, '', selectedCategory || '') }}
+                  onMouseDown={(ev) => { ev.preventDefault(); setSearchQuery(p.name); onSearch(p.name, '', selectedCategory || '') }}
                 >
                   <div className="flex gap-4">
                     <div className="flex-shrink-0">
@@ -278,7 +263,7 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
         {/* View all button */}
         <div className="text-center mt-8">
           <button
-            onClick={() => { setShowAll(true); setCurrentPage(1); setSearchQuery(''); setLiveResults([]); setShowResults(false); }}
+            onClick={() => { setShowAll(true); setCurrentPage(1); setSearchQuery(''); setLiveResults([]); }}
             className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
           >
             Ver todo
