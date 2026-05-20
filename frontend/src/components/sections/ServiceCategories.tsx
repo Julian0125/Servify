@@ -18,7 +18,7 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ categories, onSearch }: ServiceCategoriesProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedCategory] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [liveResults, setLiveResults] = useState<Professional[]>([])
   const [debounceTimer, setDebounceTimer] = useState<number | null>(null)
