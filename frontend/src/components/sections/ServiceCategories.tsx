@@ -4,6 +4,13 @@ import {
   Search, SlidersHorizontal, Crown
 } from 'lucide-react'
 import type { Category, Professional } from '../../types'
+
+type ExtendedProfessional = Professional & {
+  photo?: string
+  pricePerHour?: number | string
+  bio?: string
+  portfolio?: string[]
+}
 import { useEffect } from 'react'
 import { api } from '../../services/api'
 import ProfessionalModal from '../ui/ProfessionalModal'
@@ -22,15 +29,15 @@ interface ServiceCategoriesProps {
 export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll }: ServiceCategoriesProps) {
   const [selectedCategory] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [liveResults, setLiveResults] = useState<Professional[]>([])
+  const [liveResults, setLiveResults] = useState<ExtendedProfessional[]>([])
   const [debounceTimer, setDebounceTimer] = useState<number | null>(null)
   const borderClass = 'border-blue-500'
-  const [allProfessionals, setAllProfessionals] = useState<Professional[]>([])
+  const [allProfessionals, setAllProfessionals] = useState<ExtendedProfessional[]>([])
   const [sortBy, setSortBy] = useState<'relevance' | 'rating' | 'distance'>('relevance')
   const [sortOpen, setSortOpen] = useState(false)
   const sortRef = useRef<HTMLDivElement | null>(null)
   
-  const [selectedProfessional, setSelectedProfessional] = useState<Professional | null>(null)
+  const [selectedProfessional, setSelectedProfessional] = useState<ExtendedProfessional | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 9
   const inputRef = useRef<HTMLInputElement | null>(null)

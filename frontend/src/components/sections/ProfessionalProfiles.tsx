@@ -1,13 +1,20 @@
 import { useState } from 'react'
 import { Star, MapPin, Clock, Shield, MessageSquare, Phone, ChevronLeft, ChevronRight, Crown } from 'lucide-react'
 import type { Professional } from '../../types'
+
+type ExtendedProfessional = Professional & {
+  photo?: string
+  pricePerHour?: number | string
+  bio?: string
+  portfolio?: string[]
+}
 import ProfessionalModal from '../ui/ProfessionalModal'
 
 interface ProfessionalCardProps {
-  professional: Professional
+  professional: ExtendedProfessional
 }
 
-function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { onOpen?: (p: Professional) => void }) {
+function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { onOpen?: (p: ExtendedProfessional) => void }) {
   return (
     <div onClick={() => onOpen?.(professional)} className={`h-full flex flex-col bg-white rounded-xl shadow-sm border transition-all hover:shadow-lg ${
       professional.premium ? 'border-blue-200' : 'border-gray-100'
@@ -98,7 +105,7 @@ interface ProfessionalProfilesProps {
 export function ProfessionalProfiles({ professionals, onViewAll }: ProfessionalProfilesProps) {
   const [currentPage, setCurrentPage] = useState(0)
   const [showAll, setShowAll] = useState(false)
-  const [selected, setSelected] = useState<Professional | null>(null)
+  const [selected, setSelected] = useState<ExtendedProfessional | null>(null)
   const itemsPerPage = 3
   const totalPages = Math.ceil(professionals.length / itemsPerPage)
 
