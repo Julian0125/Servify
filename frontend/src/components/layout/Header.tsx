@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu, X, Wrench } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 const navigation = [
   { name: 'Inicio', href: '#inicio' },

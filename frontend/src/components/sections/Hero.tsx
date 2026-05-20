@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Search, MapPin, Star, Shield, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const images = [
@@ -110,7 +110,6 @@ export function Hero() {
             <div className="relative mx-auto h-80 w-full overflow-hidden rounded-3xl shadow-xl sm:h-96 group">
               {images.map((img, i) => {
                 const isActive = i === index
-                const isPrev = i === prevIndex
                 // base transition
                 let transformClass = 'translate-x-0 scale-100'
                 if (!isActive) {
