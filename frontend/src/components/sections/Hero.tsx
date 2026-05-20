@@ -30,16 +30,13 @@ const images = [
 
 export function Hero() {
   const [index, setIndex] = useState(0)
-  const [prevIndex, setPrevIndex] = useState(0)
   const [direction, setDirection] = useState<'next' | 'prev'>('next')
 
   const prev = () => {
-    setPrevIndex(index)
     setDirection('prev')
     setIndex((i) => (i - 1 + images.length) % images.length)
   }
   const next = () => {
-    setPrevIndex(index)
     setDirection('next')
     setIndex((i) => (i + 1) % images.length)
   }
@@ -151,7 +148,6 @@ export function Hero() {
                   <button
                     key={i}
                     onClick={() => {
-                      setPrevIndex(index)
                       setDirection(i > index ? 'next' : 'prev')
                       setIndex(i)
                     }}
