@@ -1,0 +1,452 @@
+[
+  {
+    "id": "pro-001",
+    "name": "Carlos Méndez",
+    "profession": "Plomero",
+    "rating": 4.8,
+    "reviews": 124,
+    "location": "Centro",
+    "pricePerHour": 25000,
+    "bio": "Plomero con 10 años de experiencia en reparaciones domésticas y proyectos comerciales.",
+    "photo": "/images/profiles/profile-01.svg",
+    "portfolio": [
+      "/images/portfolio/pro-001-1.svg",
+      "/images/portfolio/pro-001-2.svg"
+    ]
+  },
+  {
+    "id": "pro-002",
+    "name": "María Rodríguez",
+    "profession": "Electricista",
+    "rating": 4.7,
+    "reviews": 98,
+    "location": "Chapinero",
+    "pricePerHour": 30000,
+    "bio": "Especialista en instalaciones eléctricas residenciales y mantenimiento industrial ligero.",
+    "photo": "/images/profiles/profile-02.svg",
+    "portfolio": [
+      "/images/portfolio/pro-002-1.svg",
+      "/images/portfolio/pro-002-2.svg"
+    ]
+  },
+  {
+    "id": "pro-003",
+    "name": "Andrés López",
+    "profession": "Carpintero",
+    "rating": 4.6,
+    "reviews": 67,
+    "location": "Usaquén",
+    "pricePerHour": 28000,
+    "bio": "Carpintero artesanal y montaje de muebles a medida.",
+    "photo": "/images/profiles/profile-03.svg",
+    "portfolio": [
+      "/images/portfolio/pro-003-1.svg",
+      "/images/portfolio/pro-003-2.svg"
+    ]
+  },
+  {
+    "id": "pro-004",
+    "name": "Laura Gómez",
+    "profession": "Diseñadora gráfica",
+    "rating": 4.9,
+    "reviews": 210,
+    "location": "Norte",
+    "pricePerHour": 45000,
+    "bio": "Diseño de identidad visual, materiales comerciales y UX básico.",
+    "photo": "/images/profiles/profile-04.svg",
+    "portfolio": [
+      "/images/portfolio/pro-004-1.svg",
+      "/images/portfolio/pro-004-2.svg"
+    ]
+  },
+  {
+    "id": "pro-005",
+    "name": "Juan Pérez",
+    "profession": "Desarrollador web",
+    "rating": 4.8,
+    "reviews": 156,
+    "location": "Suba",
+    "pricePerHour": 60000,
+    "bio": "Desarrollador full-stack (React, Node.js) orientado a MVPs rápidos.",
+    "photo": "/images/profiles/profile-05.svg",
+    "portfolio": [
+      "/images/portfolio/pro-005-1.svg",
+      "/images/portfolio/pro-005-2.svg"
+    ]
+  },
+  {
+    "id": "pro-006",
+    "name": "Sofía Martínez",
+    "profession": "Abogada",
+    "rating": 4.5,
+    "reviews": 88,
+    "location": "Sur",
+    "pricePerHour": 70000,
+    "bio": "Asesoría legal en contratos comerciales y laborales.",
+    "photo": "/images/profiles/profile-06.svg",
+    "portfolio": [
+      "/images/portfolio/pro-006-1.svg",
+      "/images/portfolio/pro-006-2.svg"
+    ]
+  },
+  {
+    "id": "pro-007",
+    "name": "Diego Fernández",
+    "profession": "Contador",
+    "rating": 4.4,
+    "reviews": 45,
+    "location": "Occidente",
+    "pricePerHour": 55000,
+    "bio": "Servicios de contabilidad, declaración de impuestos y facturación electrónica.",
+    "photo": "/images/profiles/profile-07.svg",
+    "portfolio": [
+      "/images/portfolio/pro-007-1.svg",
+      "/images/portfolio/pro-007-2.svg"
+    ]
+  },
+  {
+    "id": "pro-008",
+    "name": "Camila Ruiz",
+    "profession": "Psicóloga",
+    "rating": 4.9,
+    "reviews": 193,
+    "location": "Teusaquillo",
+    "pricePerHour": 65000,
+    "bio": "Terapia individual y apoyo emocional con enfoque cognitivo-conductual.",
+    "photo": "/images/profiles/profile-08.svg",
+    "portfolio": [
+      "/images/portfolio/pro-008-1.svg",
+      "/images/portfolio/pro-008-2.svg"
+    ]
+  },
+  {
+    "id": "pro-009",
+    "name": "Ricardo Torres",
+    "profession": "Nutricionista",
+    "rating": 4.7,
+    "reviews": 77,
+    "location": "Norte",
+    "pricePerHour": 52000,
+    "bio": "Planes nutricionales personalizados para poblaciones diversas.",
+    "photo": "/images/profiles/profile-09.svg",
+    "portfolio": [
+      "/images/portfolio/pro-009-1.svg",
+      "/images/portfolio/pro-009-2.svg"
+    ]
+  },
+  {
+    "id": "pro-010",
+    "name": "Valentina Castro",
+    "profession": "Fisioterapeuta",
+    "rating": 4.6,
+    "reviews": 64,
+    "location": "Engativá",
+    "pricePerHour": 48000,
+    "bio": "Rehabilitación física y prevención de lesiones deportivas.",
+    "photo": "/images/profiles/profile-10.svg",
+    "portfolio": [
+      "/images/portfolio/pro-010-1.svg",
+      "/images/portfolio/pro-010-2.svg"
+    ]
+  },
+  {
+    "id": "pro-011",
+    "name": "Mateo Ríos",
+    "profession": "Fotógrafo",
+    "rating": 4.8,
+    "reviews": 130,
+    "location": "Centro",
+    "pricePerHour": 90000,
+    "bio": "Fotografía de eventos, retratos y productos.",
+    "photo": "/images/profiles/profile-11.svg",
+    "portfolio": [
+      "/images/portfolio/pro-011-1.svg",
+      "/images/portfolio/pro-011-2.svg"
+    ]
+  },
+  {
+    "id": "pro-012",
+    "name": "Isabela Vargas",
+    "profession": "Diseñadora UI/UX",
+    "rating": 4.9,
+    "reviews": 158,
+    "location": "Usaquen",
+    "pricePerHour": 72000,
+    "bio": "Diseño de interfaces y experiencia de usuario para apps y webs.",
+    "photo": "/images/profiles/profile-12.svg",
+    "portfolio": [
+      "/images/portfolio/pro-012-1.svg",
+      "/images/portfolio/pro-012-2.svg"
+    ]
+  },
+  {
+    "id": "pro-013",
+    "name": "Carlos Herrera",
+    "profession": "Chef a domicilio",
+    "rating": 4.7,
+    "reviews": 80,
+    "location": "Santa Fe",
+    "pricePerHour": 110000,
+    "bio": "Menús personalizados y catering para eventos pequeños.",
+    "photo": "/images/profiles/profile-13.svg",
+    "portfolio": [
+      "/images/portfolio/pro-013-1.svg",
+      "/images/portfolio/pro-013-2.svg"
+    ]
+  },
+  {
+    "id": "pro-014",
+    "name": "Mariana Blanco",
+    "profession": "Jardinera",
+    "rating": 4.5,
+    "reviews": 38,
+    "location": "Fontibón",
+    "pricePerHour": 32000,
+    "bio": "Mantenimiento de jardines y diseño de espacios verdes.",
+    "photo": "/images/profiles/profile-14.svg",
+    "portfolio": [
+      "/images/portfolio/pro-014-1.svg",
+      "/images/portfolio/pro-014-2.svg"
+    ]
+  },
+  {
+    "id": "pro-015",
+    "name": "Pablo Sánchez",
+    "profession": "Barbero",
+    "rating": 4.8,
+    "reviews": 140,
+    "location": "Kennedy",
+    "pricePerHour": 25000,
+    "bio": "Cortes clásicos y modernos, arreglo de barba.",
+    "photo": "/images/profiles/profile-15.svg",
+    "portfolio": [
+      "/images/portfolio/pro-015-1.svg",
+      "/images/portfolio/pro-015-2.svg"
+    ]
+  },
+  {
+    "id": "pro-016",
+    "name": "Alejandra Ruiz",
+    "profession": "Estilista",
+    "rating": 4.6,
+    "reviews": 92,
+    "location": "Bosa",
+    "pricePerHour": 40000,
+    "bio": "Peinados, color y asesoría de imagen.",
+    "photo": "/images/profiles/profile-16.svg",
+    "portfolio": [
+      "/images/portfolio/pro-016-1.svg",
+      "/images/portfolio/pro-016-2.svg"
+    ]
+  },
+  {
+    "id": "pro-017",
+    "name": "Sergio Medina",
+    "profession": "Mecánico",
+    "rating": 4.4,
+    "reviews": 55,
+    "location": "Puente Aranda",
+    "pricePerHour": 35000,
+    "bio": "Reparación y mantenimiento automotriz.",
+    "photo": "/images/profiles/profile-17.svg",
+    "portfolio": [
+      "/images/portfolio/pro-017-1.svg",
+      "/images/portfolio/pro-017-2.svg"
+    ]
+  },
+  {
+    "id": "pro-018",
+    "name": "Paula Delgado",
+    "profession": "Traductora",
+    "rating": 4.9,
+    "reviews": 77,
+    "location": "La Candelaria",
+    "pricePerHour": 65000,
+    "bio": "Traducción técnico-científica (inglés-español) y corrección de estilo.",
+    "photo": "/images/profiles/profile-18.svg",
+    "portfolio": [
+      "/images/portfolio/pro-018-1.svg",
+      "/images/portfolio/pro-018-2.svg"
+    ]
+  },
+  {
+    "id": "pro-019",
+    "name": "Fernando Ruiz",
+    "profession": "Profesor particular (Matemáticas)",
+    "rating": 4.8,
+    "reviews": 101,
+    "location": "Suba",
+    "pricePerHour": 50000,
+    "bio": "Clases personalizadas para preparatoria y universidad.",
+    "photo": "/images/profiles/profile-19.svg",
+    "portfolio": [
+      "/images/portfolio/pro-019-1.svg",
+      "/images/portfolio/pro-019-2.svg"
+    ]
+  },
+  {
+    "id": "pro-020",
+    "name": "Clara Peña",
+    "profession": "Entrenadora personal",
+    "rating": 4.7,
+    "reviews": 86,
+    "location": "Norte",
+    "pricePerHour": 70000,
+    "bio": "Planes de entrenamiento y seguimiento presencial o virtual.",
+    "photo": "/images/profiles/profile-20.svg",
+    "portfolio": [
+      "/images/portfolio/pro-020-1.svg",
+      "/images/portfolio/pro-020-2.svg"
+    ]
+  },
+  {
+    "id": "pro-021",
+    "name": "Andrés Molina",
+    "profession": "Dentista",
+    "rating": 4.6,
+    "reviews": 68,
+    "location": "Centro",
+    "pricePerHour": 90000,
+    "bio": "Odontología general y procedimientos estéticos básicos.",
+    "photo": "/images/profiles/profile-21.svg",
+    "portfolio": [
+      "/images/portfolio/pro-021-1.svg",
+      "/images/portfolio/pro-021-2.svg"
+    ]
+  },
+  {
+    "id": "pro-022",
+    "name": "Lucía Herrera",
+    "profession": "Enfermera",
+    "rating": 4.9,
+    "reviews": 210,
+    "location": "Sur",
+    "pricePerHour": 45000,
+    "bio": "Cuidados a domicilio y soporte en procedimientos básicos.",
+    "photo": "/images/profiles/profile-22.svg",
+    "portfolio": [
+      "/images/portfolio/pro-022-1.svg",
+      "/images/portfolio/pro-022-2.svg"
+    ]
+  },
+  {
+    "id": "pro-023",
+    "name": "Mateo Gómez",
+    "profession": "Arquitecto",
+    "rating": 4.7,
+    "reviews": 72,
+    "location": "Teusaquillo",
+    "pricePerHour": 95000,
+    "bio": "Proyectos arquitectónicos residenciales y remodelaciones.",
+    "photo": "/images/profiles/profile-23.svg",
+    "portfolio": [
+      "/images/portfolio/pro-023-1.svg",
+      "/images/portfolio/pro-023-2.svg"
+    ]
+  },
+  {
+    "id": "pro-024",
+    "name": "Camila Díaz",
+    "profession": "Ingeniera civil",
+    "rating": 4.6,
+    "reviews": 59,
+    "location": "Engativá",
+    "pricePerHour": 98000,
+    "bio": "Supervisión de obras y cálculo estructural.",
+    "photo": "/images/profiles/profile-24.svg",
+    "portfolio": [
+      "/images/portfolio/pro-024-1.svg",
+      "/images/portfolio/pro-024-2.svg"
+    ]
+  },
+  {
+    "id": "pro-025",
+    "name": "Julián Castro",
+    "profession": "Veterinario",
+    "rating": 4.8,
+    "reviews": 141,
+    "location": "Usaquén",
+    "pricePerHour": 60000,
+    "bio": "Atención de mascotas y consultas a domicilio.",
+    "photo": "/images/profiles/profile-25.svg",
+    "portfolio": [
+      "/images/portfolio/pro-025-1.svg",
+      "/images/portfolio/pro-025-2.svg"
+    ]
+  },
+  {
+    "id": "pro-026",
+    "name": "Natalia Peña",
+    "profession": "Community Manager",
+    "rating": 4.7,
+    "reviews": 94,
+    "location": "Norte",
+    "pricePerHour": 68000,
+    "bio": "Gestión de redes sociales y campañas de contenido.",
+    "photo": "/images/profiles/profile-26.svg",
+    "portfolio": [
+      "/images/portfolio/pro-026-1.svg",
+      "/images/portfolio/pro-026-2.svg"
+    ]
+  },
+  {
+    "id": "pro-027",
+    "name": "Diego Cabrera",
+    "profession": "Especialista en marketing",
+    "rating": 4.6,
+    "reviews": 88,
+    "location": "Centro",
+    "pricePerHour": 88000,
+    "bio": "Estrategias de marketing digital y análisis de métricas.",
+    "photo": "/images/profiles/profile-27.svg",
+    "portfolio": [
+      "/images/portfolio/pro-027-1.svg",
+      "/images/portfolio/pro-027-2.svg"
+    ]
+  },
+  {
+    "id": "pro-028",
+    "name": "Natalie Ortiz",
+    "profession": "Editora de video",
+    "rating": 4.8,
+    "reviews": 115,
+    "location": "Usaquen",
+    "pricePerHour": 76000,
+    "bio": "Edición, color y postproducción para contenido digital.",
+    "photo": "/images/profiles/profile-28.svg",
+    "portfolio": [
+      "/images/portfolio/pro-028-1.svg",
+      "/images/portfolio/pro-028-2.svg"
+    ]
+  },
+  {
+    "id": "pro-029",
+    "name": "Héctor Morales",
+    "profession": "Electricista industrial",
+    "rating": 4.5,
+    "reviews": 34,
+    "location": "Puente Aranda",
+    "pricePerHour": 85000,
+    "bio": "Mantenimiento y montaje de sistemas eléctricos industriales.",
+    "photo": "/images/profiles/profile-29.svg",
+    "portfolio": [
+      "/images/portfolio/pro-029-1.svg",
+      "/images/portfolio/pro-029-2.svg"
+    ]
+  },
+  {
+    "id": "pro-030",
+    "name": "Daniela López",
+    "profession": "Asesora de imagen",
+    "rating": 4.9,
+    "reviews": 160,
+    "location": "Norte",
+    "pricePerHour": 70000,
+    "bio": "Asesoría de imagen personal y profesional.",
+    "photo": "/images/profiles/profile-30.svg",
+    "portfolio": [
+      "/images/portfolio/pro-030-1.svg",
+      "/images/portfolio/pro-030-2.svg"
+    ]
+  }
+]

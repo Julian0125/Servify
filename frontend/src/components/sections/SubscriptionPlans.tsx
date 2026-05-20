@@ -103,7 +103,7 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
                   </div>
 
                   <ul className="space-y-3">
-                    {plan.features.map((feature) => (
+                    {plan.features.map((feature: string) => (
                       <li key={feature} className="flex items-start gap-3 text-sm">
                         <Check className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
                         <span className="text-gray-600">{feature}</span>

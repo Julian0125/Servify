@@ -19,7 +19,7 @@ interface ServiceCategoriesProps {
   onViewAll?: () => void
 }
 
-export function ServiceCategories({ categories, onSearch, onViewAll }: ServiceCategoriesProps) {
+export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll }: ServiceCategoriesProps) {
   const [selectedCategory] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [liveResults, setLiveResults] = useState<Professional[]>([])

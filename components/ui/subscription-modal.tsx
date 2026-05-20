@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function SubscriptionModal({ open, plan, onClose }: any) {
   const closeRef = useRef<HTMLButtonElement | null>(null)

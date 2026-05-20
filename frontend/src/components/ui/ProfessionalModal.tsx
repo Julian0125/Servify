@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { X, Phone, MessageCircle, Star } from 'lucide-react'
 
 interface Professional {

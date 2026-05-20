@@ -3,6 +3,7 @@ export interface Professional {
   name: string
   profession: string
   avatar: string
+  photo?: string
   rating: number
   reviews: number
   location: string
@@ -11,7 +12,10 @@ export interface Professional {
   premium: boolean
   responseTime: string
   hourlyRate: string
+  pricePerHour?: number | string
   description: string
+  bio?: string
+  portfolio?: string[]
   skills: string[]
   categoryId: string
   phone: string
