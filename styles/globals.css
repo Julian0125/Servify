@@ -122,4 +122,17 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Global button styles: subtle lift, color change on hover and click animation */
+  button {
+    @apply transition-transform transition-colors duration-150 ease-in-out transform;
+  }
+  button:hover {
+    @apply -translate-y-1 shadow-xl bg-blue-600 text-white border-blue-600;
+  }
+  button:active {
+    @apply scale-95;
+  }
+  button:focus-visible {
+    @apply ring-2 ring-blue-300 outline-none;
+  }
 }
