@@ -6,6 +6,7 @@ import {
 import type { Category, Professional } from '../../types'
 import { useEffect } from 'react'
 import { api } from '../../services/api'
+import ProfessionalModal from '../ui/ProfessionalModal'
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Wrench, Zap, Paintbrush, GraduationCap, Home, Camera, Code, Scissors
@@ -15,9 +16,10 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 interface ServiceCategoriesProps {
   categories: Category[]
   onSearch: (query: string, location: string, categoryId: string) => void
+  onViewAll?: () => void
 }
 
-export function ServiceCategories({ categories, onSearch }: ServiceCategoriesProps) {
+export function ServiceCategories({ categories, onSearch, onViewAll }: ServiceCategoriesProps) {
   const [selectedCategory] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [liveResults, setLiveResults] = useState<Professional[]>([])
@@ -27,7 +29,8 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
   const [sortBy, setSortBy] = useState<'relevance' | 'rating' | 'distance'>('relevance')
   const [sortOpen, setSortOpen] = useState(false)
   const sortRef = useRef<HTMLDivElement | null>(null)
-  const [showAll, setShowAll] = useState(false)
+  
+  const [selectedProfessional, setSelectedProfessional] = useState<Professional | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 9
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -40,7 +43,36 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
     let mounted = true
     api.professionals.getAll()
       .then((res) => { if (mounted) setAllProfessionals(res) })
-      .catch(() => { if (mounted) setAllProfessionals([]) })
+      .catch(async () => {
+        // fallback: try local static JSON and normalize fields to expected shape
+        try {
+          const resp = await fetch('/data/professionals.json')
+          if (resp.ok) {
+            const local = await resp.json()
+            const normalized = local.map((p: any) => ({
+              id: p.id || p.name,
+              name: p.name,
+              profession: p.profession || p.title || '',
+              avatar: p.avatar || (p.name ? p.name.split(' ').map((n:string)=>n[0]).slice(0,2).join('') : ''),
+              photo: p.photo || p.image || '',
+              rating: p.rating || 0,
+              reviews: p.reviews || 0,
+              location: p.location || '',
+              distance: p.distance || '',
+              hourlyRate: p.hourlyRate || (p.pricePerHour ? `$${p.pricePerHour}` : ''),
+              description: p.description || p.bio || '',
+              responseTime: p.responseTime || '',
+              premium: p.premium || false,
+              categoryId: p.categoryId || ''
+            }))
+            if (mounted) setAllProfessionals(normalized)
+            return
+          }
+        } catch (e) {
+          // ignore
+        }
+        if (mounted) setAllProfessionals([])
+      })
     return () => { mounted = false }
   }, [])
 
@@ -97,7 +129,7 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
                 // debounce API calls
                 if (debounceTimer) window.clearTimeout(debounceTimer)
                 const t = window.setTimeout(async () => {
-                    if (!v) { setLiveResults([]); setShowAll(false); return }
+                  if (!v) { setLiveResults([]); return }
                   try {
                                   const loc = undefined
                     const cat = selectedCategory || undefined
@@ -166,7 +198,7 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
         {(() => {
           const hasQuery = searchQuery.trim().length > 0
           const base = hasQuery ? liveResults : allProfessionals
-          const resultsUnsorted = showAll ? allProfessionals : base
+          const resultsUnsorted = base
           const results = [...resultsUnsorted].sort((a, b) => {
             // premium first
             if (a.premium !== b.premium) return a.premium ? -1 : 1
@@ -186,16 +218,21 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
               const cat = categories.find(c => c.id === p.categoryId)
               const Icon = cat ? (iconMap[cat.icon] || Wrench) : Wrench
               const bg = cat ? cat.color : 'bg-gray-200'
-              return (
+                return (
                 <div
                   key={p.id}
                   className={`rounded-xl bg-white p-6 border ${borderClass} shadow-md transition hover:shadow-xl hover:scale-[1.01]`}
-                  onMouseDown={(ev) => { ev.preventDefault(); setSearchQuery(p.name); onSearch(p.name, '', selectedCategory || '') }}
+                  onClick={() => setSelectedProfessional(p)}
                 >
                   <div className="flex gap-4">
                     <div className="flex-shrink-0">
-                      <div className="h-20 w-20 rounded-full bg-gray-100 flex items-center justify-center text-lg font-bold text-gray-700">
-                        {p.avatar || p.name.split(' ').map(n=>n[0]).slice(0,2).join('')}
+                      <div className="h-20 w-20 rounded-full bg-gray-100 flex items-center justify-center text-lg font-bold text-gray-700 overflow-hidden">
+                        {p.photo ? (
+                          // show photo if available
+                          <img src={p.photo} alt={p.name} className="h-20 w-20 object-cover" />
+                        ) : (
+                          (p.avatar || p.name.split(' ').map(n=>n[0]).slice(0,2).join(''))
+                        )}
                       </div>
                       <div className="mt-2 text-center text-xs text-gray-500">{p.responseTime}</div>
                     </div>
@@ -260,15 +297,15 @@ export function ServiceCategories({ categories, onSearch }: ServiceCategoriesPro
           )
         })()}
 
-        {/* View all button */}
-        <div className="text-center mt-8">
-          <button
-            onClick={() => { setShowAll(true); setCurrentPage(1); setSearchQuery(''); setLiveResults([]); }}
-            className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
-          >
-            Ver todo
-          </button>
-        </div>
+        {selectedProfessional && (
+          <ProfessionalModal
+            professional={selectedProfessional}
+            open={!!selectedProfessional}
+            onClose={() => setSelectedProfessional(null)}
+          />
+        )}
+
+        
       </div>
     </section>
   )

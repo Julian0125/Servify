@@ -280,6 +280,19 @@ function App() {
       } catch (error) {
         console.log('Backend no disponible, usando datos de demostración')
         setUsingMockData(true)
+        try {
+          const res = await fetch('/data/professionals.json')
+          if (res.ok) {
+            const local = await res.json()
+            // set local data (component will handle missing fields)
+            setProfessionals(local)
+          } else {
+            // keep existing mockProfessionals
+            console.warn('No se encontró /data/professionals.json, usando mock interno')
+          }
+        } catch (e) {
+          console.warn('Error cargando JSON local:', e)
+        }
       } finally {
         setLoading(false)
       }
@@ -317,6 +330,32 @@ function App() {
     }
   }
 
+  const handleViewAll = async () => {
+    // Load all professionals into the search/results area and scroll to section
+    try {
+      if (usingMockData) {
+        // try to load local JSON first
+        const res = await fetch('/data/professionals.json')
+        if (res.ok) {
+          const local = await res.json()
+          setProfessionals(local)
+        } else {
+          setProfessionals(mockProfessionals)
+        }
+      } else {
+        const all = await api.professionals.getAll()
+        setProfessionals(all)
+      }
+      // smooth scroll to the profesionales section (search results area)
+      setTimeout(() => {
+        const el = document.getElementById('profesionales')
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    } catch (e) {
+      console.warn('Error cargando todos los profesionales', e)
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -333,8 +372,8 @@ function App() {
       <Header />
       <main>
         <Hero />
-        <ServiceCategories categories={categories} onSearch={handleSearch} />
-        <ProfessionalProfiles professionals={professionals} />
+        <ServiceCategories categories={categories} onSearch={handleSearch} onViewAll={handleViewAll} />
+        <ProfessionalProfiles professionals={professionals} onViewAll={handleViewAll} />
         <HowItWorks />
         <SubscriptionPlans plans={plans} />
         <Testimonials testimonials={testimonials} />

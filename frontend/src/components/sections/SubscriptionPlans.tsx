@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import SubscriptionModal from '../ui/SubscriptionModal'
 import { Check, Crown, Sparkles, Zap } from 'lucide-react'
 import type { SubscriptionPlan } from '../../types'
 
@@ -20,7 +21,25 @@ interface SubscriptionPlansProps {
 }
 
 export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
-  const [isYearly, setIsYearly] = useState(false)
+  // show only Básico and Premium monthly plans
+  const displayed = useMemo(() => {
+    const found = (plans || []).filter(p => {
+      const id = (p.id || '').toString().toLowerCase()
+      const name = (p.name || '').toString().toLowerCase()
+      return id.includes('basic') || id.includes('basico') || name.includes('basic') || name.includes('básic') || name.includes('premium') || id.includes('premium')
+    })
+    if (found.length > 0) return found
+    // fallback defaults
+    return [
+      {
+        id: 'basico', name: 'Plan Básico', description: 'Ideal para comenzar a conseguir clientes', monthlyPrice: 35000, features: ['Perfil verificado en la plataforma','Hasta 5 fotos en portafolio','Posicionamiento estándar en búsquedas'], highlighted: false, icon: 'Zap', cta: 'Comenzar Gratis'
+      },
+      {
+        id: 'premium', name: 'Plan Premium', description: 'Mayor visibilidad y más oportunidades', monthlyPrice: 62500, features: ['Todo lo del Plan Básico','Hasta 20 fotos en portafolio','Posicionamiento destacado'], highlighted: true, icon: 'Crown', cta: 'Elegir Premium'
+      }
+    ]
+  }, [plans])
+  const [selectedPlan, setSelectedPlan] = useState<any | null>(null)
 
   return (
     <section id="planes" className="py-16 lg:py-24 bg-gray-50">
@@ -38,35 +57,17 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
             Acceso gratuito para clientes que buscan servicios.
           </p>
 
-          {/* Billing toggle */}
+          {/* Mensual únicamente */}
           <div className="flex items-center justify-center gap-4 mt-8">
-            <span className={`text-sm font-medium ${!isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
-              Mensual
-            </span>
-            <button
-              onClick={() => setIsYearly(!isYearly)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                isYearly ? 'bg-blue-600' : 'bg-gray-200'
-              }`}
-            >
-              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                isYearly ? 'translate-x-6' : 'translate-x-1'
-              }`} />
-            </button>
-            <span className={`text-sm font-medium ${isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
-              Anual
-              <span className="ml-2 px-2 py-0.5 text-xs font-medium text-green-700 bg-green-100 rounded-full">
-                Ahorra 15%
-              </span>
-            </span>
+            <span className="text-sm font-medium text-gray-900">Planes mensuales</span>
           </div>
         </div>
 
         {/* Plans grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {plans.map((plan) => {
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+          {displayed.map((plan: any) => {
             const Icon = iconMap[plan.icon] || Zap
-            const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice
+            const price = plan.monthlyPrice || plan.monthly || 0
 
             return (
               <div
@@ -97,13 +98,8 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
 
                 <div className="p-6 flex-1">
                   <div className="text-center mb-6">
-                    <div className="text-4xl font-bold text-gray-900">{formatPrice(price)}</div>
-                    <p className="text-sm text-gray-500">{isYearly ? '/ano' : '/mes'}</p>
-                    {isYearly && (
-                      <p className="text-xs text-green-600 mt-1">
-                        {formatPrice(price / 12)}/mes facturado anualmente
-                      </p>
-                    )}
+                      <div className="text-4xl font-bold text-gray-900">{formatPrice(price)}</div>
+                      <p className="text-sm text-gray-500">/mes</p>
                   </div>
 
                   <ul className="space-y-3">
@@ -117,12 +113,12 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
                 </div>
 
                 <div className="p-6 pt-0">
-                  <button className={`w-full py-3 px-4 text-sm font-medium rounded-lg transition-colors ${
+                  <button onClick={() => setSelectedPlan(plan)} className={`w-full py-3 px-4 text-sm font-medium rounded-lg transition-colors ${
                     plan.highlighted
                       ? 'bg-blue-600 text-white hover:bg-blue-700'
                       : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
                   }`}>
-                    {plan.cta}
+                    Suscribirse
                   </button>
                 </div>
               </div>
@@ -133,8 +129,7 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
         {/* Additional info */}
         <div className="text-center mt-12">
           <p className="text-sm text-gray-600">
-            Todos los planes incluyen periodo de prueba gratuito de 7 dias. 
-            Cancela cuando quieras sin penalizaciones.
+            Facturación mensual. Cancela en cualquier momento sin penalizaciones.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
             <span className="flex items-center gap-2 text-gray-600">
@@ -143,15 +138,18 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
             </span>
             <span className="flex items-center gap-2 text-gray-600">
               <Check className="h-4 w-4 text-green-600" />
-              Facturacion electronica
+              Facturación electrónica
             </span>
             <span className="flex items-center gap-2 text-gray-600">
               <Check className="h-4 w-4 text-green-600" />
-              Multiples metodos de pago
+              Múltiples métodos de pago
             </span>
           </div>
         </div>
       </div>
+      {selectedPlan && (
+        <SubscriptionModal open={!!selectedPlan} plan={selectedPlan} onClose={() => setSelectedPlan(null)} />
+      )}
     </section>
   )
 }

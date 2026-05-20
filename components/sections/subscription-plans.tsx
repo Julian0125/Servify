@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Check, Crown, Sparkles, Zap } from "lucide-react"
+import SubscriptionModal from "../ui/subscription-modal"
 
 const plans = [
   {
@@ -15,7 +16,6 @@ const plans = [
     icon: Zap,
     description: "Ideal para comenzar a conseguir clientes",
     monthlyPrice: 35000,
-    yearlyPrice: 306000,
     features: [
       "Perfil verificado en la plataforma",
       "Hasta 5 fotos en portafolio",
@@ -33,7 +33,6 @@ const plans = [
     icon: Crown,
     description: "Mayor visibilidad y más oportunidades",
     monthlyPrice: 62500,
-    yearlyPrice: 637500,
     features: [
       "Todo lo del Plan Básico",
       "Hasta 20 fotos en portafolio",
@@ -47,26 +46,6 @@ const plans = [
     highlighted: true,
     cta: "Elegir Premium",
   },
-  {
-    id: "enterprise",
-    name: "Plan Empresarial",
-    icon: Sparkles,
-    description: "Para equipos y empresas de servicios",
-    monthlyPrice: 150000,
-    yearlyPrice: 1530000,
-    features: [
-      "Todo lo del Plan Premium",
-      "Múltiples perfiles de empleados",
-      "Dashboard de administración",
-      "Reportes avanzados",
-      "API de integración",
-      "Account manager dedicado",
-      "Facturación empresarial",
-      "Onboarding personalizado",
-    ],
-    highlighted: false,
-    cta: "Contactar Ventas",
-  },
 ]
 
 function formatPrice(price: number): string {
@@ -79,8 +58,7 @@ function formatPrice(price: number): string {
 }
 
 export function SubscriptionPlans() {
-  const [isYearly, setIsYearly] = useState(false)
-
+  const [selectedPlan, setSelectedPlan] = useState<any | null>(null)
   return (
     <section id="planes" className="py-16 lg:py-24 bg-secondary/30">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -97,34 +75,15 @@ export function SubscriptionPlans() {
 
           {/* Billing toggle */}
           <div className="flex items-center justify-center gap-4 mt-8">
-            <Label 
-              htmlFor="billing-toggle" 
-              className={!isYearly ? "font-medium text-foreground" : "text-muted-foreground"}
-            >
-              Mensual
-            </Label>
-            <Switch
-              id="billing-toggle"
-              checked={isYearly}
-              onCheckedChange={setIsYearly}
-            />
-            <Label 
-              htmlFor="billing-toggle" 
-              className={isYearly ? "font-medium text-foreground" : "text-muted-foreground"}
-            >
-              Anual
-              <Badge variant="secondary" className="ml-2">
-                Ahorra 15%
-              </Badge>
-            </Label>
+            <Label className="font-medium text-foreground">Planes mensuales</Label>
           </div>
         </div>
 
         {/* Plans grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
           {plans.map((plan) => {
             const Icon = plan.icon
-            const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice
+            const price = plan.monthlyPrice
 
             return (
               <Card 
@@ -157,17 +116,8 @@ export function SubscriptionPlans() {
 
                 <CardContent className="flex-1">
                   <div className="text-center mb-6">
-                    <div className="text-4xl font-bold text-foreground">
-                      {formatPrice(price)}
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      {isYearly ? "/año" : "/mes"}
-                    </p>
-                    {isYearly && (
-                      <p className="text-xs text-accent mt-1">
-                        {formatPrice(price / 12)}/mes facturado anualmente
-                      </p>
-                    )}
+                    <div className="text-4xl font-bold text-foreground">{formatPrice(price)}</div>
+                    <p className="text-sm text-muted-foreground">/mes</p>
                   </div>
 
                   <ul className="space-y-3">
@@ -181,12 +131,8 @@ export function SubscriptionPlans() {
                 </CardContent>
 
                 <CardFooter className="pt-4">
-                  <Button 
-                    className="w-full" 
-                    variant={plan.highlighted ? "default" : "outline"}
-                    size="lg"
-                  >
-                    {plan.cta}
+                  <Button onClick={() => setSelectedPlan(plan)} className="w-full" variant={plan.highlighted ? "default" : "outline"} size="lg">
+                    Suscribirse
                   </Button>
                 </CardFooter>
               </Card>
@@ -197,8 +143,7 @@ export function SubscriptionPlans() {
         {/* Additional info */}
         <div className="text-center mt-12">
           <p className="text-sm text-muted-foreground">
-            Todos los planes incluyen período de prueba gratuito de 7 días. 
-            Cancela cuando quieras sin penalizaciones.
+            Facturación mensual. Cancela en cualquier momento sin penalizaciones.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
             <span className="flex items-center gap-2 text-muted-foreground">
@@ -217,5 +162,6 @@ export function SubscriptionPlans() {
         </div>
       </div>
     </section>
+  {selectedPlan && <SubscriptionModal open={!!selectedPlan} plan={selectedPlan} onClose={() => setSelectedPlan(null)} />}
   )
 }

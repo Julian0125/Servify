@@ -1,23 +1,28 @@
 import { useState } from 'react'
 import { Star, MapPin, Clock, Shield, MessageSquare, Phone, ChevronLeft, ChevronRight, Crown } from 'lucide-react'
 import type { Professional } from '../../types'
+import ProfessionalModal from '../ui/ProfessionalModal'
 
 interface ProfessionalCardProps {
   professional: Professional
 }
 
-function ProfessionalCard({ professional }: ProfessionalCardProps) {
+function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { onOpen?: (p: Professional) => void }) {
   return (
-    <div className={`h-full flex flex-col bg-white rounded-xl shadow-sm border transition-all hover:shadow-lg ${
+    <div onClick={() => onOpen?.(professional)} className={`h-full flex flex-col bg-white rounded-xl shadow-sm border transition-all hover:shadow-lg ${
       professional.premium ? 'border-blue-200' : 'border-gray-100'
     }`}>
       <div className="p-5 pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white font-semibold text-lg border-2 border-white shadow-md">
-                {professional.avatar}
-              </div>
+              {professional.photo ? (
+                <img src={professional.photo} alt={professional.name} className="h-14 w-14 rounded-full object-cover border-2 border-white shadow-md" />
+              ) : (
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white font-semibold text-lg border-2 border-white shadow-md">
+                  {professional.avatar}
+                </div>
+              )}
               {professional.verified && (
                 <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-green-600 flex items-center justify-center">
                   <Shield className="h-3 w-3 text-white" />
@@ -35,16 +40,16 @@ function ProfessionalCard({ professional }: ProfessionalCardProps) {
           <span className={`shrink-0 px-3 py-1 text-xs font-medium rounded-full ${
             professional.premium ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
           }`}>
-            {professional.hourlyRate}
+            {professional.hourlyRate || (professional.pricePerHour ? `$${professional.pricePerHour}` : '')}
           </span>
         </div>
       </div>
 
       <div className="flex-1 px-5 space-y-4">
-        <p className="text-sm text-gray-600 line-clamp-2">{professional.description}</p>
+        <p className="text-sm text-gray-600 line-clamp-2">{professional.description || professional.bio}</p>
 
         <div className="flex flex-wrap gap-2">
-          {professional.skills.map((skill) => (
+          {(professional.skills || []).map((skill) => (
             <span key={skill} className="px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full border border-gray-200">
               {skill}
             </span>
@@ -71,7 +76,7 @@ function ProfessionalCard({ professional }: ProfessionalCardProps) {
         </div>
       </div>
 
-      <div className="p-5 pt-4 border-t border-gray-100 flex gap-2">
+        <div className="p-5 pt-4 border-t border-gray-100 flex gap-2">
         <button className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
           <MessageSquare className="h-4 w-4" />
           Mensaje
@@ -87,17 +92,22 @@ function ProfessionalCard({ professional }: ProfessionalCardProps) {
 
 interface ProfessionalProfilesProps {
   professionals: Professional[]
+  onViewAll?: () => void
 }
 
-export function ProfessionalProfiles({ professionals }: ProfessionalProfilesProps) {
+export function ProfessionalProfiles({ professionals, onViewAll }: ProfessionalProfilesProps) {
   const [currentPage, setCurrentPage] = useState(0)
+  const [showAll, setShowAll] = useState(false)
+  const [selected, setSelected] = useState<Professional | null>(null)
   const itemsPerPage = 3
   const totalPages = Math.ceil(professionals.length / itemsPerPage)
 
-  const currentProfessionals = professionals.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  )
+  const currentProfessionals = showAll
+    ? professionals
+    : professionals.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+      )
 
   return (
     <section id="profesionales" className="py-16 lg:py-24">
@@ -142,17 +152,30 @@ export function ProfessionalProfiles({ professionals }: ProfessionalProfilesProp
         {/* Professionals grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentProfessionals.map((professional) => (
-            <ProfessionalCard key={professional.id} professional={professional} />
+            <ProfessionalCard key={professional.id} professional={professional} onOpen={(p) => setSelected(p)} />
           ))}
         </div>
 
         {/* View all button */}
         <div className="text-center mt-12">
-          <button className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            Ver todos los profesionales
+          <button
+            onClick={() => {
+              if (onViewAll) {
+                onViewAll()
+              } else {
+                setShowAll((s) => !s)
+                setCurrentPage(0)
+              }
+            }}
+            className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            {showAll ? 'Ver menos' : 'Ver todos los profesionales'}
           </button>
         </div>
       </div>
+        {selected && (
+          <ProfessionalModal professional={selected} open={!!selected} onClose={() => setSelected(null)} />
+        )}
     </section>
   )
 }
