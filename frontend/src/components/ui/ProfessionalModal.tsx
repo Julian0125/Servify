@@ -154,7 +154,7 @@ export default function ProfessionalModal({ professional, open, onClose }: Props
           </div>
         </div>
 
-        <div className="p-6" style={{ maxHeight: 'calc(85vh - 64px)', overflowY: 'auto', WebkitOverflowScrolling: 'touch' as any }}>
+        <div className="p-6 pb-16" style={{ maxHeight: 'calc(85vh - 64px)', overflowY: 'auto', WebkitOverflowScrolling: 'touch' as any }}>
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center gap-2">
               <Star className="h-5 w-5 text-yellow-400" />
@@ -171,14 +171,7 @@ export default function ProfessionalModal({ professional, open, onClose }: Props
 
           <p className="text-gray-700 mb-4">{professional.description}</p>
 
-          <div className="mb-4">
-            <h4 className="font-semibold mb-2">Habilidades</h4>
-            <div className="flex flex-wrap gap-2">
-              {(professional.skills || []).map((s) => (
-                <span key={s} className="px-2 py-1 bg-gray-100 text-sm rounded">{s}</span>
-              ))}
-            </div>
-          </div>
+          {/* Habilidades removed per UX request */}
 
           <div>
             <h4 className="font-semibold mb-2">Portafolio</h4>

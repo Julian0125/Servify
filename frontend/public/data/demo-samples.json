@@ -1,0 +1,33 @@
+{
+  "client": {
+    "id": "c_demo_1",
+    "name": "Ana Torres",
+    "email": "ana.torres@example.com",
+    "phone": "+57 312 555 0101",
+    "address": "Carrera 12 #34-56, Bucaramanga",
+    "role": "client"
+  },
+  "professional": {
+    "id": "p_demo_1",
+    "name": "Diego Morales",
+    "email": "diego.morales@example.com",
+    "phone": "+57 300 999 1234",
+    "profession": "Electricista Certificado",
+    "avatar": "DM",
+    "rating": 4.9,
+    "reviews": 34,
+    "distance": "1.1 km",
+    "verified": true,
+    "premium": false,
+    "responseTime": "Responde en 30 min",
+    "hourlyRate": "$55.000/hora",
+    "description": "Electricista con experiencia en instalaciones residenciales y sistemas de emergencia.",
+    "skills": ["Instalaciones", "Emergencias", "Tableros"],
+    "categoryId": "electricidad",
+    "photo": "/images/professional-diego.jpg",
+    "portfolio": [
+      "/images/portfolio/diego-1.jpg",
+      "/images/portfolio/diego-2.jpg"
+    ]
+  }
+}

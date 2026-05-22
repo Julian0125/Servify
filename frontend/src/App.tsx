@@ -6,11 +6,15 @@ import { ServiceCategories } from './components/sections/ServiceCategories'
 import { ProfessionalProfiles } from './components/sections/ProfessionalProfiles'
 import { HowItWorks } from './components/sections/HowItWorks'
 import { SubscriptionPlans } from './components/sections/SubscriptionPlans'
-import { Testimonials } from './components/sections/Testimonials'
 import { BusinessModel } from './components/sections/BusinessModel'
 import { CTA } from './components/sections/CTA'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import SelectPlanPage from './pages/SelectPlanPage'
+import ProfilePage from './pages/ProfilePage'
+import AdminProfessionals from './pages/AdminProfessionals'
 import { api } from './services/api'
-import type { Professional, Category, SubscriptionPlan, Testimonial, BusinessMetrics } from './types'
+import type { Professional, Category, SubscriptionPlan, BusinessMetrics } from './types'
 
 // Mock data para usar cuando el backend no está disponible
 const mockProfessionals: Professional[] = [
@@ -202,14 +206,6 @@ const mockPlans: SubscriptionPlan[] = [
   }
 ]
 
-const mockTestimonials: Testimonial[] = [
-  { id: 1, name: "Juan Perez", role: "Plomero Independiente", avatar: "JP", rating: 5, text: "Desde que me uni a Servify, mis ingresos aumentaron un 40%.", type: "professional" },
-  { id: 2, name: "Maria Rodriguez", role: "Cliente - Ama de casa", avatar: "MR", rating: 5, text: "Encontre un electricista excelente en menos de 10 minutos.", type: "client" },
-  { id: 3, name: "Andres Gomez", role: "Disenador Grafico", avatar: "AG", rating: 5, text: "Servify me permite mostrar mi portafolio y los clientes me contactan directamente.", type: "professional" },
-  { id: 4, name: "Carolina Silva", role: "Cliente - Emprendedora", avatar: "CS", rating: 5, text: "Pude comparar precios, ver trabajos anteriores y elegir el mejor.", type: "client" },
-  { id: 5, name: "Roberto Martinez", role: "Profesor Particular", avatar: "RM", rating: 5, text: "El plan Premium me puso primero en las busquedas de mi zona.", type: "professional" },
-  { id: 6, name: "Laura Herrera", role: "Cliente - Padre de familia", avatar: "LH", rating: 5, text: "Ver las calificaciones me dio mucha tranquilidad. Excelente servicio.", type: "client" },
-]
 
 const mockBusinessMetrics: BusinessMetrics = {
   marketData: {
@@ -256,25 +252,92 @@ function App() {
   const [professionals, setProfessionals] = useState<Professional[]>(mockProfessionals)
   const [categories, setCategories] = useState<Category[]>(mockCategories)
   const [plans, setPlans] = useState<SubscriptionPlan[]>(mockPlans)
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(mockTestimonials)
   const [businessMetrics, setBusinessMetrics] = useState<BusinessMetrics>(mockBusinessMetrics)
+  const [user, setUser] = useState<any>(() => {
+    try {
+      const u = localStorage.getItem('servify_user')
+      return u ? JSON.parse(u) : null
+    } catch {
+      return null
+    }
+  })
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem('servify_token'))
+  const [showLogin, setShowLogin] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
+  const [routeHash, setRouteHash] = useState<string>(() => (typeof window !== 'undefined' ? window.location.hash : ''))
+
+  // On mount, merge local stored professionals into current state
+  useEffect(() => {
+    const mergeLocal = () => {
+      try {
+        const raw = localStorage.getItem('servify_professionals')
+        if (!raw) return
+        const local = JSON.parse(raw)
+        setProfessionals((prev) => {
+          // avoid duplicates by id
+          const ids = new Set(prev.map(p => p.id))
+          const merged = [...prev]
+          for (const p of local) if (!ids.has(p.id)) merged.push(p)
+          return merged
+        })
+      } catch (e) {
+        console.warn('Error merging local professionals', e)
+      }
+    }
+    mergeLocal()
+    window.addEventListener('servify:professionals:updated', mergeLocal)
+    return () => window.removeEventListener('servify:professionals:updated', mergeLocal)
+  }, [])
+
+  // Session expiry checker
+  useEffect(() => {
+    const checkExpiry = () => {
+      try {
+        const expires = localStorage.getItem('servify_token_expires')
+        if (expires) {
+          const ts = Number(expires)
+          if (ts && Date.now() > ts) {
+            // expired
+            localStorage.removeItem('servify_token')
+            localStorage.removeItem('servify_token_expires')
+            localStorage.removeItem('servify_user')
+            setToken(null)
+            setUser(null)
+          }
+        }
+      } catch {}
+    }
+    checkExpiry()
+    const id = setInterval(checkExpiry, 1000 * 60)
+    return () => clearInterval(id)
+  }, [])
+  // Hash change listener to update route state
+  useEffect(() => {
+    const handler = () => setRouteHash(window.location.hash)
+    window.addEventListener('hashchange', handler)
+    return () => window.removeEventListener('hashchange', handler)
+  }, [])
+  // Scroll to top when route/hash changes so new pages start at top
+  useEffect(() => {
+    try {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+    } catch {}
+  }, [routeHash])
   const [loading, setLoading] = useState(true)
   const [usingMockData, setUsingMockData] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profData, catData, planData, testData, bizData] = await Promise.all([
+        const [profData, catData, planData, bizData] = await Promise.all([
           api.professionals.getAll(),
           api.categories.getAll(),
           api.subscriptions.getAll(),
-          api.testimonials.getAll(),
           api.business.getMetrics()
         ])
         setProfessionals(profData)
         setCategories(catData)
         setPlans(planData)
-        setTestimonials(testData)
         setBusinessMetrics(bizData)
         setUsingMockData(false)
       } catch (error) {
@@ -380,18 +443,37 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header user={user} onLogout={() => {
+        localStorage.removeItem('servify_token')
+        localStorage.removeItem('servify_user')
+        setUser(null)
+        setToken(null)
+      }} />
       <main>
-        <Hero />
-        <ServiceCategories categories={categories} onSearch={handleSearch} onViewAll={handleViewAll} />
-        <ProfessionalProfiles professionals={professionals} onViewAll={handleViewAll} />
-        <HowItWorks />
-        <SubscriptionPlans plans={plans} />
-        <Testimonials testimonials={testimonials} />
-        <BusinessModel metrics={businessMetrics} />
-        <CTA />
+        {/* Simple hash-based routing for pages */}
+        {(() => {
+          const hash = routeHash || (typeof window !== 'undefined' ? window.location.hash : '')
+          if (hash === '#login') return <LoginPage />
+          if (hash === '#register') return <RegisterPage />
+          if (hash === '#select-plan') return <SelectPlanPage />
+          if (hash === '#profile') return <ProfilePage />
+          if (hash === '#admin') return <AdminProfessionals />
+          return (
+            <>
+              <Hero />
+              <ServiceCategories categories={categories} onSearch={handleSearch} onViewAll={handleViewAll} />
+              <ProfessionalProfiles professionals={professionals} onViewAll={handleViewAll} />
+              <HowItWorks />
+              <SubscriptionPlans plans={plans} />
+              <BusinessModel metrics={businessMetrics} />
+              <CTA />
+            </>
+          )
+        })()}
+        
       </main>
       <Footer />
+      
       
       {usingMockData && (
         <div className="fixed bottom-4 right-4 bg-yellow-500 text-yellow-900 px-4 py-2 rounded-lg shadow-lg text-sm font-medium">

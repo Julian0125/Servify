@@ -9,10 +9,16 @@ const navigation = [
   { name: 'Modelo de Negocio', href: '#modelo' },
 ]
 
-export function Header() {
+interface HeaderProps {
+  user?: { name?: string } | null
+  onLogout?: () => void
+}
+
+export function Header({ user, onLogout }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
         <div className="flex lg:flex-1">
@@ -55,15 +61,21 @@ export function Header() {
               {item.name}
             </a>
           ))}
+          <a href="#admin" className="text-sm font-medium text-gray-600 hover:text-gray-900">Admin</a>
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
-          <button className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
-            Iniciar Sesion
-          </button>
-          <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-            Registrarse
-          </button>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <a href="#profile" className="text-sm font-medium text-gray-700">{user.name || 'Cuenta'}</a>
+              <button onClick={onLogout} className="px-3 py-2 text-sm font-medium text-gray-700 border rounded-md">Cerrar</button>
+            </div>
+          ) : (
+            <>
+              <a href="#login" className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">Iniciar Sesion</a>
+              <a href="#register" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Registrarse</a>
+            </>
+          )}
         </div>
       </nav>
 
@@ -82,16 +94,15 @@ export function Header() {
               </a>
             ))}
             <div className="flex flex-col gap-2 pt-4">
-              <button className="w-full px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg">
-                Iniciar Sesion
-              </button>
-              <button className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-                Registrarse
-              </button>
+              <a onClick={() => setMobileMenuOpen(false)} href="#login" className="w-full block text-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg">Iniciar Sesion</a>
+              <a onClick={() => setMobileMenuOpen(false)} href="#register" className="w-full block text-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">Registrarse</a>
             </div>
           </div>
         </div>
       )}
     </header>
+      {/* spacer to offset fixed header height so page content isn't overlapped */}
+      <div className="h-16 lg:h-20" />
+    </>
   )
 }

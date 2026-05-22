@@ -1,5 +1,57 @@
 import { useState } from 'react'
-import { Star, MapPin, Clock, Shield, MessageSquare, Phone, ChevronLeft, ChevronRight, Crown } from 'lucide-react'
+import { Star, MapPin, Clock, Shield, MessageSquare, Phone, ChevronLeft, ChevronRight, Crown, Wrench, Zap, Paintbrush, GraduationCap, Home, Camera, Code, Scissors, Users, Briefcase, Heart, Calculator, Leaf, Video, Coffee, Smile, Ruler, Plus, TrendingUp, Globe } from 'lucide-react'
+
+function getIconAndBg(profession?: string) {
+  const raw = (profession || '').toLowerCase()
+    const p = raw.normalize ? raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : raw
+  if (p.includes('plom')) return { Icon: Wrench, bg: 'bg-blue-500' }
+  if (p.includes('electr')) return { Icon: Zap, bg: 'bg-yellow-500' }
+  if (p.includes('dise') || p.includes('design')) return { Icon: Paintbrush, bg: 'bg-pink-500' }
+  if (p.includes('foto') || p.includes('phot')) return { Icon: Camera, bg: 'bg-purple-600' }
+  if (p.includes('dev') || p.includes('desarroll') || p.includes('web')) return { Icon: Code, bg: 'bg-indigo-600' }
+  if (p.includes('barber') || p.includes('hair')) return { Icon: Scissors, bg: 'bg-rose-500' }
+  if (p.includes('grad') || p.includes('profesor') || p.includes('teacher') || p.includes('profes')) return { Icon: GraduationCap, bg: 'bg-green-600' }
+  if (p.includes('abog') || p.includes('law')) return { Icon: Briefcase, bg: 'bg-slate-600' }
+  if (p.includes('entren') || p.includes('trainer') || p.includes('personal') || p.includes('fitness')) return { Icon: Users, bg: 'bg-red-500' }
+  if (p.includes('nutri') || p.includes('diet') || p.includes('nutrition')) return { Icon: Heart, bg: 'bg-pink-500' }
+  if (p.includes('carpin') || p.includes('madera') || p.includes('carpintero')) return { Icon: Ruler, bg: 'bg-amber-500' }
+  if (p.includes('cont') || p.includes('contador') || p.includes('contab')) return { Icon: Calculator, bg: 'bg-sky-600' }
+  if (p.includes('psico') || p.includes('psicóloga') || p.includes('psicologo')) return { Icon: Users, bg: 'bg-emerald-600' }
+  if (p.includes('fisio') || p.includes('fisioter')) return { Icon: Plus, bg: 'bg-teal-600' }
+  if (p.includes('chef') || p.includes('cocin') || p.includes('chef a')) return { Icon: Coffee, bg: 'bg-orange-500' }
+  if (p.includes('jard') || p.includes('jardin') || p.includes('paisaj')) return { Icon: Leaf, bg: 'bg-lime-600' }
+  if (p.includes('estil') || p.includes('imagen') || p.includes('asesora de imagen')) return { Icon: Scissors, bg: 'bg-rose-400' }
+  if (p.includes('mecanic') || p.includes('mecánic') || p.includes('mecánico')) return { Icon: Wrench, bg: 'bg-stone-600' }
+  if (p.includes('trad') || p.includes('traductor') || p.includes('tradu')) return { Icon: Globe, bg: 'bg-indigo-500' }
+  if (p.includes('dent') || p.includes('odont') || p.includes('dentista')) return { Icon: Smile, bg: 'bg-fuchsia-500' }
+  if (p.includes('enfer') || p.includes('enfermera') || p.includes('enfermero')) return { Icon: Plus, bg: 'bg-red-400' }
+  if (p.includes('arquitect') || p.includes('arquitecto')) return { Icon: Home, bg: 'bg-cyan-600' }
+  if (p.includes('ingenier') || p.includes('civil')) return { Icon: Ruler, bg: 'bg-slate-500' }
+  if (p.includes('veter') || p.includes('veterin')) return { Icon: Heart, bg: 'bg-amber-400' }
+  if (p.includes('community') || p.includes('manager') || p.includes('comunity')) return { Icon: MessageSquare, bg: 'bg-violet-600' }
+  if (p.includes('marketing') || p.includes('market')) return { Icon: TrendingUp, bg: 'bg-amber-600' }
+  if (p.includes('editor') || p.includes('edita') || p.includes('video')) return { Icon: Video, bg: 'bg-slate-400' }
+  return { Icon: Wrench, bg: 'bg-gray-200' }
+}
+
+function computeDefaultResponseFor(p: any) {
+  const defaultResponseTimes = [
+    'Responde en 15 min',
+    'Responde en 30 min',
+    'Responde en 1 hora',
+    'Responde en 2 horas',
+    'Responde en 3 horas'
+  ]
+  try {
+    if (p && p.responseTime && String(p.responseTime).trim()) return p.responseTime
+    const digits = (p && (p.id || '')).toString().replace(/\D/g, '')
+    const num = digits ? parseInt(digits, 10) : Math.floor(Math.random() * 100)
+    return defaultResponseTimes[num % defaultResponseTimes.length]
+  } catch {
+    return defaultResponseTimes[1]
+  }
+}
+
 import type { Professional } from '../../types'
 
 type ExtendedProfessional = Professional & {
@@ -41,7 +93,17 @@ function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { on
                 <h3 className="font-semibold text-gray-900">{professional.name}</h3>
                 {professional.premium && <Crown className="h-4 w-4 text-yellow-500" />}
               </div>
-              <p className="text-sm text-gray-500">{professional.profession}</p>
+              <p className="text-sm text-gray-500 flex items-center gap-2">
+                {(() => {
+                  const { Icon: IconComp, bg } = getIconAndBg(professional.profession)
+                  return (
+                    <span className={`inline-flex items-center justify-center h-5 w-5 rounded ${bg}`}>
+                      <IconComp className="h-3 w-3 text-white" />
+                    </span>
+                  )
+                })()}
+                <span>{professional.profession}</span>
+              </p>
             </div>
           </div>
           <span className="shrink-0 text-sm font-medium text-blue-600">
@@ -50,16 +112,8 @@ function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { on
         </div>
       </div>
 
-      <div className="flex-1 px-5 space-y-4">
+        <div className="flex-1 px-5 space-y-4">
         <p className="text-sm text-gray-600 line-clamp-2">{professional.description || professional.bio}</p>
-
-        <div className="flex flex-wrap gap-2">
-          {(professional.skills || []).map((skill) => (
-            <span key={skill} className="px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full border border-gray-200">
-              {skill}
-            </span>
-          ))}
-        </div>
 
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2 text-gray-600">
@@ -75,7 +129,7 @@ function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { on
 
           <div className="flex items-center gap-2 text-gray-600">
             <Clock className="h-4 w-4" />
-            <span>{professional.responseTime}</span>
+            <span className="text-sm">{computeDefaultResponseFor(professional)}</span>
           </div>
         </div>
       </div>

@@ -9,17 +9,16 @@
     "distance": "1.2 km",
     "pricePerHour": 25000,
     "bio": "Plomero con 10 años de experiencia en reparaciones domésticas y proyectos comerciales.",
+    "skills": ["instalación de tuberías", "reparaciones", "mantenimiento"],
     "photo": "https://images.pexels.com/photos/32391495/pexels-photo-32391495.jpeg",
     "premium": true,
     "portfolio": [
       "https://images.pexels.com/photos/33388390/pexels-photo-33388390.jpeg",
       "https://images.pexels.com/photos/32588559/pexels-photo-32588559.jpeg",
       "https://images.pexels.com/photos/32588560/pexels-photo-32588560.jpeg",
-      "/images/portfolio/pro-001-2.svg",
-      "/images/portfolio/pro-001-1.svg",
-      "/images/portfolio/pro-001-2.svg",
-      "/images/portfolio/pro-001-1.svg",
-      "/images/portfolio/pro-001-2.svg"
+      "https://images.pexels.com/photos/33388390/pexels-photo-33388390.jpeg",
+      "https://images.pexels.com/photos/32588559/pexels-photo-32588559.jpeg",
+      "https://images.pexels.com/photos/32588560/pexels-photo-32588560.jpeg"
     ]
   },
   {
@@ -32,6 +31,7 @@
     "distance": "2.5 km",
     "pricePerHour": 30000,
     "bio": "Especialista en instalaciones eléctricas residenciales y mantenimiento industrial ligero.",
+    "skills": ["instalaciones eléctricas", "mantenimiento", "paneles eléctricos"],
     "photo": "https://i.pravatar.cc/400?u=pro-002",
     "premium": false,
     "portfolio": [
@@ -49,6 +49,7 @@
     "distance": "8.1 km",
     "pricePerHour": 28000,
     "bio": "Carpintero artesanal y montaje de muebles a medida.",
+    "skills": ["muebles a medida", "acabados", "montaje"],
     "photo": "https://i.pravatar.cc/400?u=pro-003",
     "premium": false,
     "portfolio": [
@@ -66,6 +67,7 @@
     "distance": "5.0 km",
     "pricePerHour": 45000,
     "bio": "Diseño de identidad visual, materiales comerciales y UX básico.",
+    "skills": ["identidad visual", "branding", "UX"],
     "photo": "https://i.pravatar.cc/400?u=pro-004",
     "premium": true,
     "portfolio": [
@@ -89,6 +91,7 @@
     "distance": "9.0 km",
     "pricePerHour": 60000,
     "bio": "Desarrollador full-stack (React, Node.js) orientado a MVPs rápidos.",
+    "skills": ["React", "Node.js", "APIs"],
     "photo": "https://i.pravatar.cc/400?u=pro-005",
     "premium": false,
     "portfolio": [
@@ -106,6 +109,7 @@
     "distance": "6.5 km",
     "pricePerHour": 70000,
     "bio": "Asesoría legal en contratos comerciales y laborales.",
+    "skills": ["contratos", "laboral", "asesoría legal"],
     "photo": "https://i.pravatar.cc/400?u=pro-006",
     "premium": true,
     "portfolio": [
@@ -129,6 +133,7 @@
     "distance": "7.8 km",
     "pricePerHour": 55000,
     "bio": "Servicios de contabilidad, declaración de impuestos y facturación electrónica.",
+    "skills": ["contabilidad", "impuestos", "facturación electrónica"],
     "photo": "https://i.pravatar.cc/400?u=pro-007",
     "premium": false,
     "portfolio": [
@@ -146,6 +151,7 @@
     "distance": "3.4 km",
     "pricePerHour": 65000,
     "bio": "Terapia individual y apoyo emocional con enfoque cognitivo-conductual.",
+    "skills": ["terapia individual", "TCC", "apoyo emocional"],
     "photo": "https://i.pravatar.cc/400?u=pro-008",
     "premium": false,
     "portfolio": [
@@ -163,6 +169,7 @@
     "distance": "4.9 km",
     "pricePerHour": 52000,
     "bio": "Planes nutricionales personalizados para poblaciones diversas.",
+    "skills": ["planes nutricionales", "evaluación dietética"],
     "photo": "https://i.pravatar.cc/400?u=pro-009",
     "premium": false,
     "portfolio": [
@@ -180,6 +187,7 @@
     "distance": "10.2 km",
     "pricePerHour": 48000,
     "bio": "Rehabilitación física y prevención de lesiones deportivas.",
+    "skills": ["rehabilitación", "prevención de lesiones"],
     "photo": "https://i.pravatar.cc/400?u=pro-010",
     "premium": false,
     "portfolio": [
@@ -197,6 +205,7 @@
     "distance": "1.0 km",
     "pricePerHour": 90000,
     "bio": "Fotografía de eventos, retratos y productos.",
+    "skills": ["eventos", "retrato", "producto"],
     "photo": "https://i.pravatar.cc/400?u=pro-011",
     "premium": true,
     "portfolio": [
@@ -220,6 +229,7 @@
     "distance": "8.3 km",
     "pricePerHour": 72000,
     "bio": "Diseño de interfaces y experiencia de usuario para apps y webs.",
+    "skills": ["prototipos", "UI", "investigación"],
     "photo": "https://i.pravatar.cc/400?u=pro-012",
     "premium": false,
     "portfolio": [
@@ -237,6 +247,7 @@
     "distance": "2.2 km",
     "pricePerHour": 110000,
     "bio": "Menús personalizados y catering para eventos pequeños.",
+    "skills": ["menús personalizados", "catering", "platos internacionales"],
     "photo": "https://i.pravatar.cc/400?u=pro-013",
     "premium": false,
     "portfolio": [
@@ -254,6 +265,7 @@
     "distance": "12.0 km",
     "pricePerHour": 32000,
     "bio": "Mantenimiento de jardines y diseño de espacios verdes.",
+    "skills": ["mantenimiento de jardines", "paisajismo", "plantas"],
     "photo": "https://i.pravatar.cc/400?u=pro-014",
     "premium": false,
     "portfolio": [
@@ -271,6 +283,7 @@
     "distance": "11.5 km",
     "pricePerHour": 25000,
     "bio": "Cortes clásicos y modernos, arreglo de barba.",
+    "skills": ["cortes clásicos", "afeitado", "arreglo de barba"],
     "photo": "https://i.pravatar.cc/400?u=pro-015",
     "premium": true,
     "portfolio": [
@@ -294,6 +307,7 @@
     "distance": "13.4 km",
     "pricePerHour": 40000,
     "bio": "Peinados, color y asesoría de imagen.",
+    "skills": ["peinados", "color", "asesoría de imagen"],
     "photo": "https://i.pravatar.cc/400?u=pro-016",
     "premium": false,
     "portfolio": [
@@ -311,6 +325,7 @@
     "distance": "6.0 km",
     "pricePerHour": 35000,
     "bio": "Reparación y mantenimiento automotriz.",
+    "skills": ["mecánica automotriz", "diagnóstico", "mantenimiento"],
     "photo": "https://i.pravatar.cc/400?u=pro-017",
     "premium": false,
     "portfolio": [
@@ -328,6 +343,7 @@
     "distance": "1.8 km",
     "pricePerHour": 65000,
     "bio": "Traducción técnico-científica (inglés-español) y corrección de estilo.",
+    "skills": ["traducción inglés-español", "corrección de estilo"],
     "photo": "https://i.pravatar.cc/400?u=pro-018",
     "premium": false,
     "portfolio": [
@@ -345,6 +361,7 @@
     "distance": "9.4 km",
     "pricePerHour": 50000,
     "bio": "Clases personalizadas para preparatoria y universidad.",
+    "skills": ["álgebra", "cálculo", "preparación de exámenes"],
     "photo": "https://i.pravatar.cc/400?u=pro-019",
     "premium": false,
     "portfolio": [
@@ -362,6 +379,7 @@
     "distance": "4.2 km",
     "pricePerHour": 70000,
     "bio": "Planes de entrenamiento y seguimiento presencial o virtual.",
+    "skills": ["entrenamiento personalizado", "plan de ejercicios", "seguimiento"],
     "photo": "https://i.pravatar.cc/400?u=pro-020",
     "premium": true,
     "portfolio": [
@@ -385,6 +403,7 @@
     "distance": "1.6 km",
     "pricePerHour": 90000,
     "bio": "Odontología general y procedimientos estéticos básicos.",
+    "skills": ["odontología general", "estética dental", "limpieza dental"],
     "photo": "https://i.pravatar.cc/400?u=pro-021",
     "premium": false,
     "portfolio": [
@@ -402,6 +421,7 @@
     "distance": "6.8 km",
     "pricePerHour": 45000,
     "bio": "Cuidados a domicilio y soporte en procedimientos básicos.",
+    "skills": ["cuidados a domicilio", "soporte clínico"],
     "photo": "https://i.pravatar.cc/400?u=pro-022",
     "premium": false,
     "portfolio": [
@@ -419,6 +439,7 @@
     "distance": "3.1 km",
     "pricePerHour": 95000,
     "bio": "Proyectos arquitectónicos residenciales y remodelaciones.",
+    "skills": ["proyectos residenciales", "remodelaciones", "diseño"],
     "photo": "https://i.pravatar.cc/400?u=pro-023",
     "premium": true,
     "portfolio": [
@@ -442,6 +463,7 @@
     "distance": "10.0 km",
     "pricePerHour": 98000,
     "bio": "Supervisión de obras y cálculo estructural.",
+    "skills": ["supervisión de obras", "cálculo estructural"],
     "photo": "https://i.pravatar.cc/400?u=pro-024",
     "premium": false,
     "portfolio": [
@@ -459,6 +481,7 @@
     "distance": "8.7 km",
     "pricePerHour": 60000,
     "bio": "Atención de mascotas y consultas a domicilio.",
+    "skills": ["atención de mascotas", "vacunación", "cirugía menor"],
     "photo": "https://i.pravatar.cc/400?u=pro-025",
     "premium": false,
     "portfolio": [
@@ -476,6 +499,7 @@
     "distance": "4.5 km",
     "pricePerHour": 68000,
     "bio": "Gestión de redes sociales y campañas de contenido.",
+    "skills": ["gestión de redes", "estrategia de contenidos", "análisis de métricas"],
     "photo": "https://i.pravatar.cc/400?u=pro-026",
     "premium": false,
     "portfolio": [
@@ -493,6 +517,7 @@
     "distance": "2.9 km",
     "pricePerHour": 88000,
     "bio": "Estrategias de marketing digital y análisis de métricas.",
+    "skills": ["marketing digital", "campañas", "análisis"],
     "photo": "https://i.pravatar.cc/400?u=pro-027",
     "premium": false,
     "portfolio": [
@@ -510,6 +535,7 @@
     "distance": "8.0 km",
     "pricePerHour": 76000,
     "bio": "Edición, color y postproducción para contenido digital.",
+    "skills": ["edición", "color grading", "postproducción"],
     "photo": "https://i.pravatar.cc/400?u=pro-028",
     "premium": false,
     "portfolio": [
@@ -527,6 +553,7 @@
     "distance": "7.2 km",
     "pricePerHour": 85000,
     "bio": "Mantenimiento y montaje de sistemas eléctricos industriales.",
+    "skills": ["sistemas industriales", "mantenimiento", "montaje"],
     "photo": "https://i.pravatar.cc/400?u=pro-029",
     "premium": false,
     "portfolio": [
@@ -544,6 +571,7 @@
     "distance": "4.0 km",
     "pricePerHour": 70000,
     "bio": "Asesoría de imagen personal y profesional.",
+    "skills": ["consultoría de imagen", "styling", "personal shopping"],
     "photo": "https://i.pravatar.cc/400?u=pro-030",
     "premium": true,
     "portfolio": [
