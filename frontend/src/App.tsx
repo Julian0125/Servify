@@ -261,9 +261,7 @@ function App() {
       return null
     }
   })
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('servify_token'))
-  const [showLogin, setShowLogin] = useState(false)
-  const [showRegister, setShowRegister] = useState(false)
+  // token and modal flags removed (not used) to satisfy strict TS checks
   const [routeHash, setRouteHash] = useState<string>(() => (typeof window !== 'undefined' ? window.location.hash : ''))
 
   // On mount, merge local stored professionals into current state
@@ -447,7 +445,6 @@ function App() {
         localStorage.removeItem('servify_token')
         localStorage.removeItem('servify_user')
         setUser(null)
-        setToken(null)
       }} />
       <main>
         {/* Simple hash-based routing for pages */}

@@ -1,4 +1,6 @@
-export function BusinessModel() {
+import type { BusinessMetrics } from '../../types'
+
+export function BusinessModel({ metrics }: { metrics?: BusinessMetrics }) {
   return (
     <section id="modelo" className="py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -9,6 +11,9 @@ export function BusinessModel() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          {metrics && (
+            <div className="mb-4 text-sm text-gray-600">Mercado: {metrics.marketData?.tam?.label || ''}</div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
             <div className="p-4 border rounded-lg">
               <h4 className="text-sm font-semibold text-blue-700 mb-2">SOCIOS CLAVE</h4>

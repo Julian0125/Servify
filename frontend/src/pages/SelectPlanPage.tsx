@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { SubscriptionPlan } from '../types'
+import showToast from '../utils/toast'
 
 const plans: SubscriptionPlan[] = [
   { id: 'basico', name: 'Plan Basico', icon: 'Zap', description: 'Hasta 5 fotos en portafolio', monthlyPrice: 35000, yearlyPrice: 306000, features: [], highlighted: false, cta: 'Comprar' },

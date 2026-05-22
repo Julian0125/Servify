@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { api } from '../services/api'
-import type { SubscriptionPlan } from '../types'
+// removed unused import
 import showToast from '../utils/toast'
 
 export default function RegisterPage() {
