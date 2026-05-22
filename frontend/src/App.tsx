@@ -302,24 +302,35 @@ function App() {
 
   const handleSearch = async (query: string, location: string, categoryId: string) => {
     if (usingMockData) {
-      // Filtrar mock data
-      let filtered = mockProfessionals
-      if (query) {
-        filtered = filtered.filter(p => 
-          p.name.toLowerCase().includes(query.toLowerCase()) ||
-          p.profession.toLowerCase().includes(query.toLowerCase())
-        )
+      // Filtrar datos locales (si existe el JSON con portafolios reales)
+      try {
+        const res = await fetch('/data/professionals.json')
+        let data = mockProfessionals
+        if (res.ok) {
+          // use the local JSON which includes `photo` and `portfolio`
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data = await res.json()
+        }
+        let filtered = data
+        if (query) {
+          filtered = filtered.filter((p: any) =>
+            p.name.toLowerCase().includes(query.toLowerCase()) ||
+            (p.profession || '').toLowerCase().includes(query.toLowerCase())
+          )
+        }
+        if (categoryId) {
+          filtered = filtered.filter((p: any) => p.categoryId === categoryId)
+        }
+        filtered.sort((a: any, b: any) => {
+          if (a.premium && !b.premium) return -1
+          if (!a.premium && b.premium) return 1
+          return (b.rating || 0) - (a.rating || 0)
+        })
+        setProfessionals(filtered)
+      } catch (e) {
+        console.error('Error filtrando datos locales:', e)
+        setProfessionals(mockProfessionals)
       }
-      if (categoryId) {
-        filtered = filtered.filter(p => p.categoryId === categoryId)
-      }
-      // Ordenar: premium primero
-      filtered.sort((a, b) => {
-        if (a.premium && !b.premium) return -1
-        if (!a.premium && b.premium) return 1
-        return b.rating - a.rating
-      })
-      setProfessionals(filtered)
     } else {
       try {
         const results = await api.professionals.search(query, location, categoryId)

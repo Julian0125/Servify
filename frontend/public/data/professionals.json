@@ -6,10 +6,18 @@
     "rating": 4.8,
     "reviews": 124,
     "location": "Centro",
+    "distance": "1.2 km",
     "pricePerHour": 25000,
     "bio": "Plomero con 10 años de experiencia en reparaciones domésticas y proyectos comerciales.",
-    "photo": "/images/profiles/profile-01.svg",
+    "photo": "https://images.pexels.com/photos/32391495/pexels-photo-32391495.jpeg",
+    "premium": true,
     "portfolio": [
+      "https://images.pexels.com/photos/33388390/pexels-photo-33388390.jpeg",
+      "https://images.pexels.com/photos/32588559/pexels-photo-32588559.jpeg",
+      "https://images.pexels.com/photos/32588560/pexels-photo-32588560.jpeg",
+      "/images/portfolio/pro-001-2.svg",
+      "/images/portfolio/pro-001-1.svg",
+      "/images/portfolio/pro-001-2.svg",
       "/images/portfolio/pro-001-1.svg",
       "/images/portfolio/pro-001-2.svg"
     ]
@@ -21,9 +29,11 @@
     "rating": 4.7,
     "reviews": 98,
     "location": "Chapinero",
+    "distance": "2.5 km",
     "pricePerHour": 30000,
     "bio": "Especialista en instalaciones eléctricas residenciales y mantenimiento industrial ligero.",
-    "photo": "/images/profiles/profile-02.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-002",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-002-1.svg",
       "/images/portfolio/pro-002-2.svg"
@@ -36,9 +46,11 @@
     "rating": 4.6,
     "reviews": 67,
     "location": "Usaquén",
+    "distance": "8.1 km",
     "pricePerHour": 28000,
     "bio": "Carpintero artesanal y montaje de muebles a medida.",
-    "photo": "/images/profiles/profile-03.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-003",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-003-1.svg",
       "/images/portfolio/pro-003-2.svg"
@@ -51,10 +63,18 @@
     "rating": 4.9,
     "reviews": 210,
     "location": "Norte",
+    "distance": "5.0 km",
     "pricePerHour": 45000,
     "bio": "Diseño de identidad visual, materiales comerciales y UX básico.",
-    "photo": "/images/profiles/profile-04.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-004",
+    "premium": true,
     "portfolio": [
+      "/images/portfolio/pro-004-1.svg",
+      "/images/portfolio/pro-004-2.svg",
+      "/images/portfolio/pro-004-1.svg",
+      "/images/portfolio/pro-004-2.svg",
+      "/images/portfolio/pro-004-1.svg",
+      "/images/portfolio/pro-004-2.svg",
       "/images/portfolio/pro-004-1.svg",
       "/images/portfolio/pro-004-2.svg"
     ]
@@ -66,9 +86,11 @@
     "rating": 4.8,
     "reviews": 156,
     "location": "Suba",
+    "distance": "9.0 km",
     "pricePerHour": 60000,
     "bio": "Desarrollador full-stack (React, Node.js) orientado a MVPs rápidos.",
-    "photo": "/images/profiles/profile-05.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-005",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-005-1.svg",
       "/images/portfolio/pro-005-2.svg"
@@ -81,10 +103,18 @@
     "rating": 4.5,
     "reviews": 88,
     "location": "Sur",
+    "distance": "6.5 km",
     "pricePerHour": 70000,
     "bio": "Asesoría legal en contratos comerciales y laborales.",
-    "photo": "/images/profiles/profile-06.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-006",
+    "premium": true,
     "portfolio": [
+      "/images/portfolio/pro-006-1.svg",
+      "/images/portfolio/pro-006-2.svg",
+      "/images/portfolio/pro-006-1.svg",
+      "/images/portfolio/pro-006-2.svg",
+      "/images/portfolio/pro-006-1.svg",
+      "/images/portfolio/pro-006-2.svg",
       "/images/portfolio/pro-006-1.svg",
       "/images/portfolio/pro-006-2.svg"
     ]
@@ -96,9 +126,11 @@
     "rating": 4.4,
     "reviews": 45,
     "location": "Occidente",
+    "distance": "7.8 km",
     "pricePerHour": 55000,
     "bio": "Servicios de contabilidad, declaración de impuestos y facturación electrónica.",
-    "photo": "/images/profiles/profile-07.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-007",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-007-1.svg",
       "/images/portfolio/pro-007-2.svg"
@@ -111,9 +143,11 @@
     "rating": 4.9,
     "reviews": 193,
     "location": "Teusaquillo",
+    "distance": "3.4 km",
     "pricePerHour": 65000,
     "bio": "Terapia individual y apoyo emocional con enfoque cognitivo-conductual.",
-    "photo": "/images/profiles/profile-08.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-008",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-008-1.svg",
       "/images/portfolio/pro-008-2.svg"
@@ -126,9 +160,11 @@
     "rating": 4.7,
     "reviews": 77,
     "location": "Norte",
+    "distance": "4.9 km",
     "pricePerHour": 52000,
     "bio": "Planes nutricionales personalizados para poblaciones diversas.",
-    "photo": "/images/profiles/profile-09.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-009",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-009-1.svg",
       "/images/portfolio/pro-009-2.svg"
@@ -141,9 +177,11 @@
     "rating": 4.6,
     "reviews": 64,
     "location": "Engativá",
+    "distance": "10.2 km",
     "pricePerHour": 48000,
     "bio": "Rehabilitación física y prevención de lesiones deportivas.",
-    "photo": "/images/profiles/profile-10.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-010",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-010-1.svg",
       "/images/portfolio/pro-010-2.svg"
@@ -156,10 +194,18 @@
     "rating": 4.8,
     "reviews": 130,
     "location": "Centro",
+    "distance": "1.0 km",
     "pricePerHour": 90000,
     "bio": "Fotografía de eventos, retratos y productos.",
-    "photo": "/images/profiles/profile-11.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-011",
+    "premium": true,
     "portfolio": [
+      "/images/portfolio/pro-011-1.svg",
+      "/images/portfolio/pro-011-2.svg",
+      "/images/portfolio/pro-011-1.svg",
+      "/images/portfolio/pro-011-2.svg",
+      "/images/portfolio/pro-011-1.svg",
+      "/images/portfolio/pro-011-2.svg",
       "/images/portfolio/pro-011-1.svg",
       "/images/portfolio/pro-011-2.svg"
     ]
@@ -171,9 +217,11 @@
     "rating": 4.9,
     "reviews": 158,
     "location": "Usaquen",
+    "distance": "8.3 km",
     "pricePerHour": 72000,
     "bio": "Diseño de interfaces y experiencia de usuario para apps y webs.",
-    "photo": "/images/profiles/profile-12.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-012",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-012-1.svg",
       "/images/portfolio/pro-012-2.svg"
@@ -186,9 +234,11 @@
     "rating": 4.7,
     "reviews": 80,
     "location": "Santa Fe",
+    "distance": "2.2 km",
     "pricePerHour": 110000,
     "bio": "Menús personalizados y catering para eventos pequeños.",
-    "photo": "/images/profiles/profile-13.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-013",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-013-1.svg",
       "/images/portfolio/pro-013-2.svg"
@@ -201,9 +251,11 @@
     "rating": 4.5,
     "reviews": 38,
     "location": "Fontibón",
+    "distance": "12.0 km",
     "pricePerHour": 32000,
     "bio": "Mantenimiento de jardines y diseño de espacios verdes.",
-    "photo": "/images/profiles/profile-14.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-014",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-014-1.svg",
       "/images/portfolio/pro-014-2.svg"
@@ -216,10 +268,18 @@
     "rating": 4.8,
     "reviews": 140,
     "location": "Kennedy",
+    "distance": "11.5 km",
     "pricePerHour": 25000,
     "bio": "Cortes clásicos y modernos, arreglo de barba.",
-    "photo": "/images/profiles/profile-15.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-015",
+    "premium": true,
     "portfolio": [
+      "/images/portfolio/pro-015-1.svg",
+      "/images/portfolio/pro-015-2.svg",
+      "/images/portfolio/pro-015-1.svg",
+      "/images/portfolio/pro-015-2.svg",
+      "/images/portfolio/pro-015-1.svg",
+      "/images/portfolio/pro-015-2.svg",
       "/images/portfolio/pro-015-1.svg",
       "/images/portfolio/pro-015-2.svg"
     ]
@@ -231,9 +291,11 @@
     "rating": 4.6,
     "reviews": 92,
     "location": "Bosa",
+    "distance": "13.4 km",
     "pricePerHour": 40000,
     "bio": "Peinados, color y asesoría de imagen.",
-    "photo": "/images/profiles/profile-16.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-016",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-016-1.svg",
       "/images/portfolio/pro-016-2.svg"
@@ -246,9 +308,11 @@
     "rating": 4.4,
     "reviews": 55,
     "location": "Puente Aranda",
+    "distance": "6.0 km",
     "pricePerHour": 35000,
     "bio": "Reparación y mantenimiento automotriz.",
-    "photo": "/images/profiles/profile-17.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-017",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-017-1.svg",
       "/images/portfolio/pro-017-2.svg"
@@ -261,9 +325,11 @@
     "rating": 4.9,
     "reviews": 77,
     "location": "La Candelaria",
+    "distance": "1.8 km",
     "pricePerHour": 65000,
     "bio": "Traducción técnico-científica (inglés-español) y corrección de estilo.",
-    "photo": "/images/profiles/profile-18.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-018",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-018-1.svg",
       "/images/portfolio/pro-018-2.svg"
@@ -276,9 +342,11 @@
     "rating": 4.8,
     "reviews": 101,
     "location": "Suba",
+    "distance": "9.4 km",
     "pricePerHour": 50000,
     "bio": "Clases personalizadas para preparatoria y universidad.",
-    "photo": "/images/profiles/profile-19.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-019",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-019-1.svg",
       "/images/portfolio/pro-019-2.svg"
@@ -291,10 +359,18 @@
     "rating": 4.7,
     "reviews": 86,
     "location": "Norte",
+    "distance": "4.2 km",
     "pricePerHour": 70000,
     "bio": "Planes de entrenamiento y seguimiento presencial o virtual.",
-    "photo": "/images/profiles/profile-20.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-020",
+    "premium": true,
     "portfolio": [
+      "/images/portfolio/pro-020-1.svg",
+      "/images/portfolio/pro-020-2.svg",
+      "/images/portfolio/pro-020-1.svg",
+      "/images/portfolio/pro-020-2.svg",
+      "/images/portfolio/pro-020-1.svg",
+      "/images/portfolio/pro-020-2.svg",
       "/images/portfolio/pro-020-1.svg",
       "/images/portfolio/pro-020-2.svg"
     ]
@@ -306,9 +382,11 @@
     "rating": 4.6,
     "reviews": 68,
     "location": "Centro",
+    "distance": "1.6 km",
     "pricePerHour": 90000,
     "bio": "Odontología general y procedimientos estéticos básicos.",
-    "photo": "/images/profiles/profile-21.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-021",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-021-1.svg",
       "/images/portfolio/pro-021-2.svg"
@@ -321,9 +399,11 @@
     "rating": 4.9,
     "reviews": 210,
     "location": "Sur",
+    "distance": "6.8 km",
     "pricePerHour": 45000,
     "bio": "Cuidados a domicilio y soporte en procedimientos básicos.",
-    "photo": "/images/profiles/profile-22.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-022",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-022-1.svg",
       "/images/portfolio/pro-022-2.svg"
@@ -336,10 +416,18 @@
     "rating": 4.7,
     "reviews": 72,
     "location": "Teusaquillo",
+    "distance": "3.1 km",
     "pricePerHour": 95000,
     "bio": "Proyectos arquitectónicos residenciales y remodelaciones.",
-    "photo": "/images/profiles/profile-23.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-023",
+    "premium": true,
     "portfolio": [
+      "/images/portfolio/pro-023-1.svg",
+      "/images/portfolio/pro-023-2.svg",
+      "/images/portfolio/pro-023-1.svg",
+      "/images/portfolio/pro-023-2.svg",
+      "/images/portfolio/pro-023-1.svg",
+      "/images/portfolio/pro-023-2.svg",
       "/images/portfolio/pro-023-1.svg",
       "/images/portfolio/pro-023-2.svg"
     ]
@@ -351,9 +439,11 @@
     "rating": 4.6,
     "reviews": 59,
     "location": "Engativá",
+    "distance": "10.0 km",
     "pricePerHour": 98000,
     "bio": "Supervisión de obras y cálculo estructural.",
-    "photo": "/images/profiles/profile-24.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-024",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-024-1.svg",
       "/images/portfolio/pro-024-2.svg"
@@ -366,9 +456,11 @@
     "rating": 4.8,
     "reviews": 141,
     "location": "Usaquén",
+    "distance": "8.7 km",
     "pricePerHour": 60000,
     "bio": "Atención de mascotas y consultas a domicilio.",
-    "photo": "/images/profiles/profile-25.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-025",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-025-1.svg",
       "/images/portfolio/pro-025-2.svg"
@@ -381,9 +473,11 @@
     "rating": 4.7,
     "reviews": 94,
     "location": "Norte",
+    "distance": "4.5 km",
     "pricePerHour": 68000,
     "bio": "Gestión de redes sociales y campañas de contenido.",
-    "photo": "/images/profiles/profile-26.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-026",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-026-1.svg",
       "/images/portfolio/pro-026-2.svg"
@@ -396,9 +490,11 @@
     "rating": 4.6,
     "reviews": 88,
     "location": "Centro",
+    "distance": "2.9 km",
     "pricePerHour": 88000,
     "bio": "Estrategias de marketing digital y análisis de métricas.",
-    "photo": "/images/profiles/profile-27.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-027",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-027-1.svg",
       "/images/portfolio/pro-027-2.svg"
@@ -411,9 +507,11 @@
     "rating": 4.8,
     "reviews": 115,
     "location": "Usaquen",
+    "distance": "8.0 km",
     "pricePerHour": 76000,
     "bio": "Edición, color y postproducción para contenido digital.",
-    "photo": "/images/profiles/profile-28.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-028",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-028-1.svg",
       "/images/portfolio/pro-028-2.svg"
@@ -426,9 +524,11 @@
     "rating": 4.5,
     "reviews": 34,
     "location": "Puente Aranda",
+    "distance": "7.2 km",
     "pricePerHour": 85000,
     "bio": "Mantenimiento y montaje de sistemas eléctricos industriales.",
-    "photo": "/images/profiles/profile-29.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-029",
+    "premium": false,
     "portfolio": [
       "/images/portfolio/pro-029-1.svg",
       "/images/portfolio/pro-029-2.svg"
@@ -441,10 +541,18 @@
     "rating": 4.9,
     "reviews": 160,
     "location": "Norte",
+    "distance": "4.0 km",
     "pricePerHour": 70000,
     "bio": "Asesoría de imagen personal y profesional.",
-    "photo": "/images/profiles/profile-30.svg",
+    "photo": "https://i.pravatar.cc/400?u=pro-030",
+    "premium": true,
     "portfolio": [
+      "/images/portfolio/pro-030-1.svg",
+      "/images/portfolio/pro-030-2.svg",
+      "/images/portfolio/pro-030-1.svg",
+      "/images/portfolio/pro-030-2.svg",
+      "/images/portfolio/pro-030-1.svg",
+      "/images/portfolio/pro-030-2.svg",
       "/images/portfolio/pro-030-1.svg",
       "/images/portfolio/pro-030-2.svg"
     ]

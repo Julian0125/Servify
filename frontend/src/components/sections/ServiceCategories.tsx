@@ -62,6 +62,7 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
               profession: p.profession || p.title || '',
               avatar: p.avatar || (p.name ? p.name.split(' ').map((n:string)=>n[0]).slice(0,2).join('') : ''),
               photo: p.photo || p.image || '',
+              portfolio: p.portfolio || [],
               rating: p.rating || 0,
               reviews: p.reviews || 0,
               location: p.location || '',
@@ -138,12 +139,23 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
                 const t = window.setTimeout(async () => {
                   if (!v) { setLiveResults([]); return }
                   try {
-                                  const loc = undefined
+                    const loc = undefined
                     const cat = selectedCategory || undefined
                     const results = await api.professionals.search(v, loc, cat)
-                    setLiveResults(results.slice(0, 6))
+                    setLiveResults((results || []).slice(0, 6))
                   } catch (err) {
-                    setLiveResults([])
+                    // fallback to local filtering when API fails
+                    try {
+                      const q = v.toLowerCase()
+                      const filtered = allProfessionals.filter((p: any) => (
+                        (p.name && p.name.toLowerCase().includes(q)) ||
+                        (p.profession && p.profession.toLowerCase().includes(q)) ||
+                        (p.description && p.description.toLowerCase().includes(q))
+                      ))
+                      setLiveResults(filtered.slice(0, 6))
+                    } catch (err2) {
+                      setLiveResults([])
+                    }
                   }
                 }, 250)
                 setDebounceTimer(t)
@@ -265,7 +277,7 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
                             <Icon className="h-5 w-5 text-white" />
                           </div>
                         </div>
-                        <div className="text-sm text-gray-600">{p.hourlyRate}</div>
+                        <div className="text-sm font-medium text-blue-600">{p.hourlyRate}</div>
                         <div className="ml-auto text-xs text-gray-400">{p.distance}</div>
                       </div>
 

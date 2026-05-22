@@ -44,9 +44,7 @@ function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { on
               <p className="text-sm text-gray-500">{professional.profession}</p>
             </div>
           </div>
-          <span className={`shrink-0 px-3 py-1 text-xs font-medium rounded-full ${
-            professional.premium ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
-          }`}>
+          <span className="shrink-0 text-sm font-medium text-blue-600">
             {professional.hourlyRate || (professional.pricePerHour ? `$${professional.pricePerHour}` : '')}
           </span>
         </div>
@@ -72,8 +70,7 @@ function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { on
 
           <div className="flex items-center gap-2 text-gray-600">
             <MapPin className="h-4 w-4" />
-            <span>{professional.location}</span>
-            <span className="text-blue-600 font-medium">- {professional.distance}</span>
+            <span className="text-blue-600 font-medium">{professional.distance || professional.location}</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-600">
