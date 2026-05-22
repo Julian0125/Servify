@@ -299,7 +299,6 @@ function App() {
             localStorage.removeItem('servify_token')
             localStorage.removeItem('servify_token_expires')
             localStorage.removeItem('servify_user')
-            setToken(null)
             setUser(null)
           }
         }
