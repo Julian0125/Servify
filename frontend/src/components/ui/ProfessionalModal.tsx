@@ -1,23 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { X, Phone, MessageCircle, Star, ChevronLeft, ChevronRight } from 'lucide-react'
-
-interface Professional {
-  id: string
-  name: string
-  profession?: string
-  photo?: string
-  avatar?: string
-  rating?: number
-  reviews?: number
-  location?: string
-  hourlyRate?: string
-  pricePerHour?: number
-  description?: string
-  skills?: string[]
-  responseTime?: string
-  premium?: boolean
-  portfolio?: string[]
-}
+import type { Professional } from '../../types'
 
 interface Props {
   professional: Professional | null
