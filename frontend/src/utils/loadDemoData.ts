@@ -12,11 +12,17 @@ export default function loadDemoData() {
           localStorage.setItem('servify_token_expires', String(expires))
           localStorage.setItem('servify_user', JSON.stringify({ id: json.client.id, name: json.client.name, email: json.client.email, role: 'client' }))
         }
-        if (json.professional) {
-          // write professionals array (preserve existing ones)
+        if (json.professionals && Array.isArray(json.professionals)) {
           const raw = localStorage.getItem('servify_professionals')
           const arr = raw ? JSON.parse(raw) : []
-          // ensure not duplicated by id
+          json.professionals.forEach((p:any) => {
+            if (!arr.find((x:any) => x.id === p.id)) arr.push(p)
+          })
+          localStorage.setItem('servify_professionals', JSON.stringify(arr))
+        } else if (json.professional) {
+          // legacy single professional key
+          const raw = localStorage.getItem('servify_professionals')
+          const arr = raw ? JSON.parse(raw) : []
           if (!arr.find((p:any) => p.id === json.professional.id)) {
             arr.push(json.professional)
             localStorage.setItem('servify_professionals', JSON.stringify(arr))
@@ -37,13 +43,13 @@ export function clearDemoData() {
   try {
     const raw = localStorage.getItem('servify_professionals')
     if (raw) {
-      const arr = JSON.parse(raw).filter((p:any) => p.id !== 'p_demo_1')
+      const arr = JSON.parse(raw).filter((p:any) => p.id !== 'p_demo_1' && p.id !== 'p_demo_2')
       localStorage.setItem('servify_professionals', JSON.stringify(arr))
     }
     const userRaw = localStorage.getItem('servify_user')
     if (userRaw) {
       const u = JSON.parse(userRaw)
-      if (u && u.email === 'ana.torres@example.com') {
+      if (u && (u.email === 'ana.torres@example.com' || u.email === 'carlos.mendez@example.com' || u.email === 'andres.paredes@example.com')) {
         localStorage.removeItem('servify_user')
         localStorage.removeItem('servify_token')
         localStorage.removeItem('servify_token_expires')

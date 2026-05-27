@@ -4,25 +4,26 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  /* Palette: soft gray-blue background + teal primary */
+  --background: 210 60% 97%;
+  --foreground: 222.2 12% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 12% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 12% 10%;
+  --primary: 178 76% 42%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 16% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 20% 96.5%;
+  --muted-foreground: 215.4 12% 45%;
+  --accent: 178 76% 42%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 210 12% 87%;
+  --input: 210 20% 96%;
+  --ring: 178 76% 50%;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);

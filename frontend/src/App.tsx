@@ -283,6 +283,48 @@ function App() {
       }
     }
     mergeLocal()
+    // If there are no local professionals saved, populate with first 5 from static data
+    async function ensureLocalDefaults() {
+      try {
+        const raw = localStorage.getItem('servify_professionals')
+        const parsed = raw ? JSON.parse(raw) : null
+        if (Array.isArray(parsed) && parsed.length > 0) return
+        const res = await fetch('/data/professionals.json')
+        if (!res.ok) return
+        const all = await res.json()
+        const first5 = (all || []).slice(0, 5).map((p: any) => ({
+          id: p.id || `p_${Math.random().toString(36).slice(2,9)}`,
+          name: p.name,
+          profession: p.profession || p.bio || 'Profesional',
+          avatar: (p.name || '').split(' ').map((s:string)=>s[0]).slice(0,2).join(''),
+          rating: p.rating || 5,
+          reviews: p.reviews || 0,
+          distance: p.distance || '0 km',
+          verified: p.verified ?? true,
+          premium: p.premium ?? false,
+          responseTime: p.responseTime || 'Responde en 1 hora',
+          hourlyRate: p.pricePerHour ? `$${p.pricePerHour}` : (p.hourlyRate || ''),
+          description: p.bio || p.description || '',
+          skills: p.skills || [],
+          categoryId: p.categoryId || inferCategoryIdFromProfession(p.profession || p.bio),
+          photo: p.photo || '/placeholder-profile.png',
+          portfolio: p.portfolio || [],
+          location: p.location || ''
+        }))
+        localStorage.setItem('servify_professionals', JSON.stringify(first5))
+        window.dispatchEvent(new CustomEvent('servify:professionals:updated'))
+        // merge into state immediately
+        setProfessionals((prev) => {
+          const ids = new Set(prev.map(p => p.id))
+          const merged = [...prev]
+          for (const p of first5) if (!ids.has(p.id)) merged.push(p)
+          return merged
+        })
+      } catch (e) {
+        console.warn('Error ensuring local defaults', e)
+      }
+    }
+    ensureLocalDefaults()
     window.addEventListener('servify:professionals:updated', mergeLocal)
     return () => window.removeEventListener('servify:professionals:updated', mergeLocal)
   }, [])
@@ -314,14 +356,31 @@ function App() {
     window.addEventListener('hashchange', handler)
     return () => window.removeEventListener('hashchange', handler)
   }, [])
-  // Scroll to top when route/hash changes so new pages start at top
+  // Scroll to top only for full-page route hashes (not in-page anchors)
   useEffect(() => {
     try {
-      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+      const pageRoutes = ['#login', '#register', '#select-plan', '#profile', '#admin']
+      if (pageRoutes.includes(routeHash)) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+      }
     } catch {}
   }, [routeHash])
   const [loading, setLoading] = useState(true)
   const [usingMockData, setUsingMockData] = useState(false)
+
+  function inferCategoryIdFromProfession(text?: string) {
+    if (!text) return 'otros'
+    const p = text.toLowerCase()
+    if (p.includes('plom')) return 'plomeria'
+    if (p.includes('electr') || p.includes('electric')) return 'electricidad'
+    if (p.includes('pint') || p.includes('pintor')) return 'pintura'
+    if (p.includes('foto') || p.includes('fotograf')) return 'fotografia'
+    if (p.includes('desarroll') || p.includes('web') || p.includes('dev')) return 'programacion'
+    if (p.includes('clase') || p.includes('profesor')) return 'clases'
+    if (p.includes('limpieza') || p.includes('limpi')) return 'limpieza'
+    if (p.includes('belleza') || p.includes('estil')) return 'belleza'
+    return 'otros'
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -343,8 +402,27 @@ function App() {
         try {
           const res = await fetch('/data/professionals.json')
           if (res.ok) {
-            const local = await res.json()
-            // set local data (component will handle missing fields)
+            const rawLocal = await res.json()
+            const local = rawLocal.map((p: any) => ({
+              id: p.id || `p_${Math.random().toString(36).slice(2,9)}`,
+              name: p.name,
+              profession: p.profession || p.bio || 'Profesional',
+              avatar: (p.name || '').split(' ').map((s:string)=>s[0]).slice(0,2).join(''),
+              rating: p.rating || 5,
+              reviews: p.reviews || 0,
+              distance: p.distance || '0 km',
+              verified: p.verified ?? true,
+              premium: p.premium ?? false,
+              responseTime: p.responseTime || 'Responde en 1 hora',
+              hourlyRate: p.pricePerHour ? `$${p.pricePerHour}` : (p.hourlyRate || ''),
+              description: p.bio || p.description || '',
+              skills: p.skills || [],
+              categoryId: p.categoryId || inferCategoryIdFromProfession(p.profession || p.bio),
+              photo: p.photo || '/placeholder-profile.png',
+              portfolio: p.portfolio || [],
+              location: p.location || ''
+            }))
+            // set local data with inferred categoryId so searches by category work
             setProfessionals(local)
           } else {
             // keep existing mockProfessionals
@@ -369,7 +447,26 @@ function App() {
         if (res.ok) {
           // use the local JSON which includes `photo` and `portfolio`
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          data = await res.json()
+          const rawLocal = await res.json()
+          data = rawLocal.map((p: any) => ({
+            id: p.id || `p_${Math.random().toString(36).slice(2,9)}`,
+            name: p.name,
+            profession: p.profession || p.bio || 'Profesional',
+            avatar: (p.name || '').split(' ').map((s:string)=>s[0]).slice(0,2).join(''),
+            rating: p.rating || 5,
+            reviews: p.reviews || 0,
+            distance: p.distance || '0 km',
+            verified: p.verified ?? true,
+            premium: p.premium ?? false,
+            responseTime: p.responseTime || 'Responde en 1 hora',
+            hourlyRate: p.pricePerHour ? `$${p.pricePerHour}` : (p.hourlyRate || ''),
+            description: p.bio || p.description || '',
+            skills: p.skills || [],
+            categoryId: p.categoryId || inferCategoryIdFromProfession(p.profession || p.bio),
+            photo: p.photo || '/placeholder-profile.png',
+            portfolio: p.portfolio || [],
+            location: p.location || ''
+          }))
         }
         let filtered = data
         if (query) {
@@ -450,7 +547,7 @@ function App() {
         {(() => {
           const hash = routeHash || (typeof window !== 'undefined' ? window.location.hash : '')
           if (hash === '#login') return <LoginPage />
-          if (hash === '#register') return <RegisterPage />
+          if (hash === '#register') return <RegisterPage categories={categories} />
           if (hash === '#select-plan') return <SelectPlanPage />
           if (hash === '#profile') return <ProfilePage />
           if (hash === '#admin') return <AdminProfessionals />

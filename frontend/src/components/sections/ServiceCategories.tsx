@@ -44,40 +44,106 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
   }, [debounceTimer])
 
   useEffect(() => {
-    let mounted = true
-    api.professionals.getAll()
-      .then((res) => { if (mounted) setAllProfessionals(res) })
-      .catch(async () => {
-        try {
-          const resp = await fetch('/data/professionals.json')
-          if (resp.ok) {
-            const local = await resp.json()
-            const normalized = local.map((p: any) => ({
-              id: p.id || p.name,
-              name: p.name,
-              profession: p.profession || p.title || '',
-              avatar: p.avatar || (p.name ? p.name.split(' ').map((n:string)=>n[0]).slice(0,2).join('') : ''),
-              photo: p.photo || p.image || '',
-              portfolio: p.portfolio || [],
-              rating: p.rating || 0,
-              reviews: p.reviews || 0,
-              location: p.location || '',
-              distance: p.distance || '',
-              hourlyRate: p.hourlyRate || (p.pricePerHour ? `$${p.pricePerHour}` : ''),
-              description: p.description || p.bio || '',
-              responseTime: p.responseTime || '',
-              premium: p.premium || false,
-              categoryId: p.categoryId || ''
-            }))
-            if (mounted) setAllProfessionals(normalized)
-            return
+    
+    function inferCategoryIdFromProfession(text?: string) {
+      if (!text) return 'otros'
+      const p = text.toLowerCase()
+      if (p.includes('plom')) return 'plomeria'
+      if (p.includes('electr') || p.includes('electric')) return 'electricidad'
+      if (p.includes('pint') || p.includes('pintor')) return 'pintura'
+      if (p.includes('foto') || p.includes('fotograf')) return 'fotografia'
+      if (p.includes('desarroll') || p.includes('web') || p.includes('dev')) return 'programacion'
+      if (p.includes('clase') || p.includes('profesor')) return 'clases'
+      if (p.includes('limpieza') || p.includes('limpi')) return 'limpieza'
+      if (p.includes('belleza') || p.includes('estil')) return 'belleza'
+      return 'otros'
+    }
+
+    const mergeWithLocal = (arr: ExtendedProfessional[]) => {
+      try {
+        const raw = localStorage.getItem('servify_professionals')
+        if (!raw) return arr
+        const local = JSON.parse(raw)
+        if (!Array.isArray(local)) return arr
+        const ids = new Set(arr.map(a => a.id))
+        const merged = [...arr]
+        for (const p of local) {
+          const normalized = {
+            id: p.id,
+            name: p.name,
+            profession: p.profession || p.bio || '',
+            avatar: p.avatar || (p.name ? p.name.split(' ').map((n:string)=>n[0]).slice(0,2).join('') : ''),
+            photo: p.photo || '',
+            portfolio: p.portfolio || [],
+            rating: p.rating || 0,
+            reviews: p.reviews || 0,
+            location: p.location || '',
+            distance: p.distance || '',
+            hourlyRate: p.hourlyRate || (p.pricePerHour ? `$${p.pricePerHour}` : ''),
+            description: p.description || p.bio || '',
+            responseTime: p.responseTime || '',
+            premium: p.premium || false,
+            categoryId: p.categoryId || inferCategoryIdFromProfession(p.profession || p.bio || ''),
+            verified: p.verified || false,
+            skills: p.skills || [],
+            phone: p.phone || '',
+            email: p.email || ''
           }
-        } catch (e) {
-          // ignore
+          if (!ids.has(normalized.id)) merged.push(normalized)
         }
-        if (mounted) setAllProfessionals([])
-      })
-    return () => { mounted = false }
+        return merged
+      } catch (e) {
+        return arr
+      }
+    }
+
+    const loadProfessionals = async () => {
+      try {
+        const res = await api.professionals.getAll()
+        if (Array.isArray(res)) {
+          setAllProfessionals(mergeWithLocal(res))
+          return
+        }
+      } catch (e) {
+        // backend not available, continue to fallback
+      }
+
+      try {
+        const resp = await fetch('/data/professionals.json')
+        if (resp.ok) {
+          const local = await resp.json()
+          const normalized = (local || []).map((p: any) => ({
+            id: p.id || p.name,
+            name: p.name,
+            profession: p.profession || p.title || p.bio || '',
+            avatar: p.avatar || (p.name ? p.name.split(' ').map((n:string)=>n[0]).slice(0,2).join('') : ''),
+            photo: p.photo || p.image || '',
+            portfolio: p.portfolio || [],
+            rating: p.rating || 0,
+            reviews: p.reviews || 0,
+            location: p.location || '',
+            distance: p.distance || '',
+            hourlyRate: p.hourlyRate || (p.pricePerHour ? `$${p.pricePerHour}` : ''),
+            description: p.description || p.bio || '',
+            responseTime: p.responseTime || '',
+            premium: p.premium || false,
+            categoryId: p.categoryId || inferCategoryIdFromProfession(p.profession || p.title || p.bio || '')
+            ,
+            phone: p.phone || ''
+          }))
+          setAllProfessionals(mergeWithLocal(normalized))
+          return
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      setAllProfessionals(mergeWithLocal([]))
+    }
+
+    loadProfessionals()
+    window.addEventListener('servify:professionals:updated', loadProfessionals)
+    return () => { window.removeEventListener('servify:professionals:updated', loadProfessionals) }
   }, [])
 
   useEffect(() => {
@@ -117,7 +183,7 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
 
       console.debug('ServiceCategories pagination', { total, totalPages, page, currentPage, itemsPerPage, paginatedLength: paginated.length, hasQuery })
 
-      if (results.length === 0) return (<div className="text-center text-gray-500">No hay profesionales que mostrar.</div>)
+      if (results.length === 0) return (<div className="text-center text-muted-foreground">No hay profesionales que mostrar.</div>)
 
       return (
         <>
@@ -160,24 +226,24 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
 
               const bg = cat ? cat.color : 'bg-gray-200'
               return (
-                <div key={p.id} className={`rounded-xl bg-white p-6 border ${borderClass} shadow-md transition hover:shadow-xl hover:scale-[1.01]`} onClick={() => setSelectedProfessional(p)}>
+                <div key={p.id} className={`rounded-xl bg-card p-6 border ${borderClass} shadow-md transition hover:shadow-xl hover:scale-[1.01]`} onClick={() => setSelectedProfessional(p)}>
                   <div className="flex gap-4">
                     <div className="flex-shrink-0">
-                      <div className="h-20 w-20 rounded-full bg-gray-100 flex items-center justify-center text-lg font-bold text-gray-700 overflow-hidden">
+                      <div className="h-20 w-20 rounded-full bg-muted flex items-center justify-center text-lg font-bold text-muted-foreground overflow-hidden">
                         {p.photo ? (
                           <img src={p.photo} alt={p.name} className="h-20 w-20 object-cover" />
                         ) : (
                           (p.avatar || (p.name || '').split(' ').map((n:any)=>n[0]).slice(0,2).join(''))
                         )}
                       </div>
-                      <div className="mt-2 text-center text-xs text-gray-500">{p.responseTime}</div>
+                      <div className="mt-2 text-center text-xs text-muted-foreground">{p.responseTime}</div>
                     </div>
 
                     <div className="flex-1">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <div className="text-lg font-semibold text-gray-900">{p.name}</div>
-                          <div className="mt-1 text-sm text-gray-600 flex items-center gap-2">
+                          <div className="text-lg font-semibold text-foreground">{p.name}</div>
+                          <div className="mt-1 text-sm text-muted-foreground flex items-center gap-2">
                             <span className={`inline-flex items-center justify-center h-6 w-6 rounded ${iconBg || bg}`}>
                               <Icon className="h-4 w-4 text-white" />
                             </span>
@@ -187,18 +253,18 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
                         <div className="text-right">
                           <div className="flex items-center justify-end gap-2">
                             {p.premium && <Crown className="h-5 w-5 text-yellow-500" />}
-                            <div className="text-sm font-medium text-gray-800">{p.rating} ★</div>
+                            <div className="text-sm font-medium text-foreground">{p.rating} ★</div>
                           </div>
-                          <div className="mt-2 text-sm text-gray-500">{p.reviews} reseñas</div>
+                          <div className="mt-2 text-sm text-muted-foreground">{p.reviews} reseñas</div>
                         </div>
                       </div>
 
                       <div className="mt-3 flex items-center gap-3">
-                        <div className="text-sm font-medium text-blue-600">{p.hourlyRate}</div>
-                        <div className="ml-auto text-xs text-gray-400">{p.distance}</div>
+                        <div className="text-sm font-medium text-primary">{p.hourlyRate}</div>
+                        <div className="ml-auto text-xs text-muted-foreground">{p.distance}</div>
                       </div>
 
-                      <p className="mt-3 text-sm text-gray-500 line-clamp-3">{p.description}</p>
+                      <p className="mt-3 text-sm text-muted-foreground line-clamp-3">{p.description}</p>
                     </div>
                   </div>
                 </div>
@@ -207,12 +273,12 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
           </div>
 
           {total > itemsPerPage && (
-            <div className="flex items-center justify-center gap-3 mt-6">
-              <button className="px-3 py-1 rounded-md border bg-white hover:bg-blue-600 hover:text-white" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={page === 1}>Prev</button>
+              <div className="flex items-center justify-center gap-3 mt-6">
+              <button className="px-3 py-1 rounded-md border bg-card hover:bg-primary hover:text-white" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={page === 1}>Prev</button>
               {Array.from({ length: totalPages }).map((_, i) => (
-                <button key={i} onClick={() => setCurrentPage(i + 1)} className={`px-3 py-1 rounded-md border ${page === i + 1 ? 'bg-blue-500 text-white' : 'bg-white hover:bg-blue-600 hover:text-white'}`}>{i + 1}</button>
+                <button key={i} onClick={() => setCurrentPage(i + 1)} className={`px-3 py-1 rounded-md border ${page === i + 1 ? 'bg-primary text-white' : 'bg-card hover:bg-primary hover:text-white'}`}>{i + 1}</button>
               ))}
-              <button className="px-3 py-1 rounded-md border bg-white hover:bg-blue-600 hover:text-white" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>Next</button>
+              <button className="px-3 py-1 rounded-md border bg-card hover:bg-primary hover:text-white" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>Next</button>
             </div>
           )}
         </>
@@ -224,20 +290,20 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
   }
 
   return (
-    <section id="servicios" className="py-16 lg:py-24 bg-gray-100">
+    <section id="servicios" className="py-16 lg:py-24 bg-background">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         {/* Section header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="inline-block px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full mb-4">Categorias de Servicio</span>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Encuentra el servicio que necesitas</h2>
-          <p className="mt-4 text-lg text-gray-600">Explora nuestras categorias y encuentra profesionales verificados cerca de ti</p>
+          <span className="inline-block px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full mb-4">Categorias de Servicio</span>
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Encuentra el servicio que necesitas</h2>
+          <p className="mt-4 text-lg text-muted-foreground">Explora nuestras categorias y encuentra profesionales verificados cerca de ti</p>
         </div>
 
         {/* Search and filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <input type="text" placeholder="Buscar servicios..." className="w-full pl-10 pr-10 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" ref={inputRef} value={searchQuery} onChange={(e)=>{
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <input type="text" placeholder="Buscar servicios..." className="w-full pl-10 pr-10 py-3 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" ref={inputRef} value={searchQuery} onChange={(e)=>{
               const v = e.target.value
               setSearchQuery(v)
               if (debounceTimer) window.clearTimeout(debounceTimer)
@@ -265,7 +331,7 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
               setDebounceTimer(t)
             }} onKeyDown={(e)=> e.key === 'Enter' && handleSearch()} />
             {searchQuery && (
-              <button aria-label="Borrar búsqueda" onClick={() => { setSearchQuery(''); setLiveResults([]); inputRef.current?.focus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-all duration-150 ease-in-out hover:scale-110 hover:text-gray-800 hover:animate-pulse">
+              <button aria-label="Borrar búsqueda" onClick={() => { setSearchQuery(''); setLiveResults([]); inputRef.current?.focus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted transition-all duration-150 ease-in-out hover:scale-110 hover:text-foreground hover:animate-pulse">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform transition-transform duration-200 hover:rotate-90" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
                   <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
@@ -276,23 +342,23 @@ export function ServiceCategories({ categories, onSearch, onViewAll: _onViewAll 
           <div className="flex gap-4 items-center">
             <div className="relative" ref={sortRef}>
               <div className="flex items-center gap-2">
-                <label className="text-sm text-gray-600">Ordenar por:</label>
-                <button type="button" onClick={() => setSortOpen(s => !s)} className="inline-flex items-center justify-between gap-3 py-2 px-3 text-sm border border-gray-300 rounded-lg bg-white shadow-sm hover:shadow-md transition-transform duration-150">
-                  <span className="text-sm text-gray-700">{sortBy === 'relevance' ? 'Relevancia' : sortBy === 'rating' ? 'Puntuación' : 'Cercanía'}</span>
+                <label className="text-sm text-muted-foreground">Ordenar por:</label>
+                <button type="button" onClick={() => setSortOpen(s => !s)} className="inline-flex items-center justify-between gap-3 py-2 px-3 text-sm border border-border rounded-lg bg-card shadow-sm hover:shadow-md transition-transform duration-150">
+                  <span className="text-sm text-muted-foreground">{sortBy === 'relevance' ? 'Relevancia' : sortBy === 'rating' ? 'Puntuación' : 'Cercanía'}</span>
                   <svg className={`h-4 w-4 text-gray-500 transform transition-transform ${sortOpen ? 'rotate-180' : 'rotate-0'}`} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </button>
               </div>
 
-              <div className={`absolute mt-2 right-0 w-44 bg-white rounded-lg shadow-lg ring-1 ring-black/5 z-20 transform transition-all duration-150 ${sortOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+              <div className={`absolute mt-2 right-0 w-44 bg-card rounded-lg shadow-lg ring-1 ring-black/5 z-20 transform transition-all duration-150 ${sortOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
                 <ul className="py-1">
-                  <li className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${sortBy === 'relevance' ? 'font-semibold' : ''}`} onClick={() => { setSortBy('relevance'); setSortOpen(false); }}>Relevancia</li>
-                  <li className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${sortBy === 'rating' ? 'font-semibold' : ''}`} onClick={() => { setSortBy('rating'); setSortOpen(false); }}>Puntuación</li>
-                  <li className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${sortBy === 'distance' ? 'font-semibold' : ''}`} onClick={() => { setSortBy('distance'); setSortOpen(false); }}>Cercanía</li>
+                  <li className={`px-3 py-2 text-sm cursor-pointer hover:bg-muted ${sortBy === 'relevance' ? 'font-semibold' : ''}`} onClick={() => { setSortBy('relevance'); setSortOpen(false); }}>Relevancia</li>
+                  <li className={`px-3 py-2 text-sm cursor-pointer hover:bg-muted ${sortBy === 'rating' ? 'font-semibold' : ''}`} onClick={() => { setSortBy('rating'); setSortOpen(false); }}>Puntuación</li>
+                  <li className={`px-3 py-2 text-sm cursor-pointer hover:bg-muted ${sortBy === 'distance' ? 'font-semibold' : ''}`} onClick={() => { setSortBy('distance'); setSortOpen(false); }}>Cercanía</li>
                 </ul>
               </div>
             </div>
 
-            <button onClick={() => handleSearch()} className="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
+            <button onClick={() => handleSearch()} className="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-foreground bg-card border border-border rounded-lg hover:bg-primary hover:text-white transition-colors">
               <SlidersHorizontal className="h-4 w-4" /> Buscar
             </button>
           </div>

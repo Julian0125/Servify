@@ -63,6 +63,24 @@ export const api = {
     },
     getFeatured: () => fetchApi<Professional[]>('/professionals/featured'),
     getByCategory: (categoryId: string) => fetchApi<Professional[]>(`/professionals/category/${categoryId}`),
+    // Create a new professional; fallback to localStorage when backend is unavailable
+    create: async (payload: Partial<Professional>) => {
+      try {
+        return await postApi<Professional>('/professionals', payload)
+      } catch (err) {
+        // Fallback: store in localStorage so the frontend can show the new professional
+        try {
+          const raw = localStorage.getItem('servify_professionals')
+          const arr = raw ? JSON.parse(raw) : []
+          const prof = { ...(payload as any), id: payload.id || `p_${Math.random().toString(36).slice(2,9)}` }
+          arr.push(prof)
+          localStorage.setItem('servify_professionals', JSON.stringify(arr))
+          return Promise.resolve(prof as Professional)
+        } catch (e) {
+          return Promise.reject(err)
+        }
+      }
+    },
   },
   categories: {
     getAll: () => fetchApi<Category[]>('/categories'),
@@ -82,6 +100,32 @@ export const api = {
         return await postApi<{ token: string; user?: any; expiresAt?: number }>('/auth/login', payload)
       } catch (err) {
         // Fallback to frontend simulation when backend is not available
+        try {
+          // If a user object exists in localStorage and matches email, reuse it
+          const rawUser = localStorage.getItem('servify_user')
+          if (rawUser) {
+            const u = JSON.parse(rawUser)
+            if (u && u.email === payload.email) {
+              const token = createFakeToken()
+              const expiresAt = Date.now() + 1000 * 60 * 60 * 24
+              return Promise.resolve({ token, user: u, expiresAt })
+            }
+          }
+          // If a professional entry exists with this email, use it to build user
+          const rawProfs = localStorage.getItem('servify_professionals')
+          if (rawProfs) {
+            const arr = JSON.parse(rawProfs)
+            const p = Array.isArray(arr) ? arr.find((x:any)=>x.email === payload.email) : null
+            if (p) {
+              const token = createFakeToken()
+              const expiresAt = Date.now() + 1000 * 60 * 60 * 24
+              const user = { id: p.id, name: p.name, email: p.email, role: 'professional', photo: p.photo }
+              return Promise.resolve({ token, user, expiresAt })
+            }
+          }
+        } catch (e) {
+          // ignore and fallback to generic fake response
+        }
         return Promise.resolve(fakeAuthResponse(payload))
       }
     },

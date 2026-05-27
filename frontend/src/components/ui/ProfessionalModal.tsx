@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { X, Phone, MessageCircle, Star, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, MessageCircle, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Professional } from '../../types'
 
 interface Props {
@@ -118,10 +118,10 @@ export default function ProfessionalModal({ professional, open, onClose }: Props
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div role="dialog" aria-modal="true" aria-label={`Detalle de ${professional.name}`} className="relative max-w-3xl w-full mx-4 bg-white rounded-xl shadow-lg max-h-[85vh] overflow-hidden">
-        <div className="flex items-center flex-wrap gap-3 p-4 border-b">
+      <div role="dialog" aria-modal="true" aria-label={`Detalle de ${professional.name}`} className="relative max-w-3xl w-full mx-4 bg-card rounded-xl shadow-lg max-h-[85vh] overflow-hidden border border-border">
+        <div className="flex items-center flex-wrap gap-3 p-4 border-b border-border">
           <div className="flex items-center">
-            <div className="h-16 w-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center text-lg font-bold text-gray-700">
+            <div className="h-16 w-16 rounded-full overflow-hidden bg-muted flex items-center justify-center text-lg font-bold text-muted-foreground">
               {professional.photo ? (
                 <img src={professional.photo} alt={professional.name} className="h-16 w-16 object-cover" />
               ) : (
@@ -130,25 +130,35 @@ export default function ProfessionalModal({ professional, open, onClose }: Props
             </div>
           </div>
 
-          <div className="flex flex-col justify-center md:pl-2">
-            <div className="text-lg font-semibold">{professional.name}</div>
-            <div className="text-sm text-gray-600">{professional.profession}</div>
+            <div className="flex flex-col justify-center md:pl-2">
+            <div className="text-lg font-semibold text-foreground">{professional.name}</div>
+            <div className="text-sm text-muted-foreground">{professional.profession}</div>
           </div>
 
           <div className="flex flex-col justify-center md:pl-4">
-            <div className="text-sm text-gray-500">Tarifa</div>
-            <div className="font-medium text-blue-600">{displayHourlyRate}</div>
-            <div className="text-sm text-gray-500 mt-1">{displayResponseTime}</div>
+            <div className="text-sm text-muted-foreground">Tarifa</div>
+            <div className="font-medium text-primary">{displayHourlyRate}</div>
+            <div className="text-sm text-muted-foreground mt-1">{displayResponseTime}</div>
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            <button className="inline-flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-md text-sm">
-              <Phone className="h-4 w-4" /> Llamar
-            </button>
-            <button className="inline-flex items-center gap-2 px-3 py-2 bg-white border rounded-md text-sm">
-              <MessageCircle className="h-4 w-4" /> Mensaje
-            </button>
-            <button ref={closeBtnRef} onClick={onClose} className="p-2 rounded-md hover:bg-gray-100">
+            {professional.phone ? (
+              (() => {
+                const digits = (professional.phone || '').replace(/\D/g, '')
+                const text = `Hola ${professional.name}, estoy interesado en tu servicio de ${professional.profession}. ¿Está disponible?`
+                const waUrl = `https://wa.me/${digits}?text=${encodeURIComponent(text)}`
+                return (
+                  <a href={waUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-600 text-white rounded-md text-sm">
+                    <MessageCircle className="h-4 w-4" /> WhatsApp
+                  </a>
+                )
+              })()
+            ) : (
+              <button disabled className="inline-flex items-center gap-2 px-3 py-2 bg-card border border-border rounded-md text-sm opacity-60">
+                <MessageCircle className="h-4 w-4" /> WhatsApp
+              </button>
+            )}
+            <button ref={closeBtnRef} onClick={onClose} className="p-2 rounded-md hover:bg-muted">
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -159,7 +169,7 @@ export default function ProfessionalModal({ professional, open, onClose }: Props
             <div className="flex items-center gap-2">
               <Star className="h-5 w-5 text-yellow-400" />
               <div className="font-medium">{professional.rating ?? '—'}</div>
-              <div className="text-sm text-gray-500">({professional.reviews ?? 0} reseñas)</div>
+              <div className="text-sm text-muted-foreground">({professional.reviews ?? 0} reseñas)</div>
             </div>
             <div className="ml-4 text-sm">
               <span className="text-gray-600">{displayDistance}</span>
@@ -169,18 +179,18 @@ export default function ProfessionalModal({ professional, open, onClose }: Props
             )}
           </div>
 
-          <p className="text-gray-700 mb-4">{professional.description}</p>
+          <p className="text-foreground mb-4">{professional.description}</p>
 
           {/* Habilidades removed per UX request */}
 
           <div>
             <h4 className="font-semibold mb-2">Portafolio</h4>
             {gallery.length === 0 ? (
-              <div className="text-sm text-gray-500">No hay imágenes de trabajos previos.</div>
+              <div className="text-sm text-muted-foreground">No hay imágenes de trabajos previos.</div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {gallery.map((src, i) => (
-                    <div key={i} className="h-24 bg-gray-100 overflow-hidden rounded cursor-pointer" onClick={() => setSelectedIndex(i)}>
+                    <div key={i} className="h-24 bg-muted overflow-hidden rounded cursor-pointer" onClick={() => setSelectedIndex(i)}>
                       <img
                         src={src}
                         alt={`portfolio-${i}`}

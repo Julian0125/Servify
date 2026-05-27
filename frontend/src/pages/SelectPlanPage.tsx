@@ -44,16 +44,16 @@ export default function SelectPlanPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-background p-6">
       <div className="w-full max-w-3xl grid md:grid-cols-2 gap-6">
         {plans.map((p) => (
-          <div key={p.id} className={`p-6 rounded-lg shadow ${p.highlighted ? 'border-2 border-blue-600' : 'border'}`}>
-            <h3 className="text-lg font-semibold mb-2">{p.name}</h3>
-            <p className="text-sm text-gray-600 mb-4">{p.description}</p>
-            <p className="text-2xl font-bold text-gray-900 mb-4">${p.monthlyPrice.toLocaleString()}</p>
+          <div key={p.id} className={`p-6 rounded-lg shadow ${p.highlighted ? 'border-2 border-primary' : 'border border-border bg-card'}`}>
+            <h3 className="text-lg font-semibold mb-2 text-foreground">{p.name}</h3>
+            <p className="text-sm text-muted-foreground mb-4">{p.description}</p>
+            <p className="text-2xl font-bold text-foreground mb-4">${p.monthlyPrice.toLocaleString()}</p>
             <div className="flex items-center gap-2">
-              <button onClick={() => setSelected(p.id)} className={`px-3 py-2 rounded-md border ${selected === p.id ? 'bg-blue-600 text-white' : ''}`}>{selected === p.id ? 'Seleccionado' : 'Seleccionar'}</button>
-              <button onClick={buy} disabled={!selected || processing} className="px-3 py-2 bg-green-600 text-white rounded-md">{processing ? 'Procesando...' : 'Comprar'}</button>
+              <button onClick={() => setSelected(p.id)} className={`px-3 py-2 rounded-md border ${selected === p.id ? 'bg-primary text-white' : 'bg-card'}`}>{selected === p.id ? 'Seleccionado' : 'Seleccionar'}</button>
+              <button onClick={buy} disabled={!selected || processing} className="px-3 py-2 bg-primary text-white rounded-md">{processing ? 'Procesando...' : 'Comprar'}</button>
             </div>
           </div>
         ))}

@@ -1,4 +1,15 @@
 import { useState, useEffect } from 'react'
+import showToast from '../utils/toast'
+
+// helper: convert File to data URL
+function fileToDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(String(reader.result || ''))
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null)
@@ -11,7 +22,7 @@ export default function ProfilePage() {
       if (raw) {
         const u = JSON.parse(raw)
         setUser(u)
-        setForm({ name: u.name || '', email: u.email || '', plan: u.plan || '' })
+        setForm({ name: u.name || '', email: u.email || '', plan: u.plan || '', photo: u.photo || '' })
       }
     } catch {}
   }, [])
@@ -24,17 +35,21 @@ export default function ProfilePage() {
       u.name = form.name
       u.email = form.email
       u.plan = form.plan
+      if (form.photo) u.photo = form.photo
+      else if (form.photo === '') delete u.photo
       localStorage.setItem('servify_user', JSON.stringify(u))
       setUser(u)
       setEditing(false)
+      showToast('Perfil guardado', 'success')
     } catch (e) {
       console.warn(e)
+      showToast('Error al guardar', 'error')
     }
   }
 
   return (
-    <div className="min-h-screen flex items-start justify-center bg-gradient-to-b from-white to-gray-50 p-6">
-      <div className="w-full max-w-3xl bg-white rounded-lg shadow p-6">
+    <div className="min-h-screen flex items-start justify-center bg-background p-6">
+      <div className="w-full max-w-3xl bg-card rounded-lg shadow p-6">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Mi perfil</h2>
           <div>
@@ -46,36 +61,61 @@ export default function ProfilePage() {
         {user ? (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="col-span-1">
-              <div className="h-40 w-40 bg-gray-100 rounded-lg flex items-center justify-center text-3xl font-bold">{(user.name||'U').slice(0,2)}</div>
+              <div className="h-40 w-40 bg-muted rounded-lg flex items-center justify-center overflow-hidden">
+                {user.photo ? (
+                  <img src={user.photo} alt={user.name} className="h-full w-full object-cover" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/placeholder.png'}} />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center text-3xl font-bold">{(user.name||'U').slice(0,2)}</div>
+                )}
+              </div>
             </div>
+
             <div className="col-span-2">
               {!editing ? (
                 <div>
-                  <p className="text-lg font-semibold">{user.name}</p>
-                  <p className="text-sm text-gray-600">{user.email}</p>
+                  <p className="text-lg font-semibold text-foreground">{user.name}</p>
+                  <p className="text-sm text-muted-foreground">{user.email}</p>
                   <p className="mt-2 text-sm">Plan: <strong>{user.plan || 'Gratuito'}</strong></p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Nombre</label>
-                    <input value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} className="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2" />
+                    <label className="block text-sm font-medium text-muted-foreground">Foto de perfil</label>
+                    <div className="flex items-center space-x-3">
+                      <div className="h-20 w-20 bg-muted rounded-md overflow-hidden">
+                        {form.photo ? <img src={form.photo} alt="preview" className="h-full w-full object-cover" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/placeholder.png'}} /> : <div className="h-full w-full flex items-center justify-center">{(form.name||'U').slice(0,2)}</div>}
+                      </div>
+                      <div>
+                        <input type="file" accept="image/*" onChange={async (e)=>{
+                          const f = e.currentTarget.files && e.currentTarget.files[0]
+                          if (!f) return
+                          try {
+                            const data = await fileToDataUrl(f)
+                            setForm({...form, photo: data})
+                          } catch (err) { console.warn(err) }
+                          e.currentTarget.value = ''
+                        }} />
+                        {form.photo && <button className="mt-2 text-sm text-red-600" onClick={()=>setForm({...form, photo: ''})}>Eliminar foto</button>}
+                      </div>
+                    </div>
                   </div>
+
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Email</label>
-                    <input value={form.email} onChange={(e)=>setForm({...form, email: e.target.value})} className="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2" />
+                    <label className="block text-sm font-medium text-muted-foreground">Nombre</label>
+                    <input value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} className="mt-1 w-full rounded-md border border-border shadow-sm p-2 bg-input text-foreground" />
                   </div>
+
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Plan</label>
-                    <input value={form.plan} onChange={(e)=>setForm({...form, plan: e.target.value})} className="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2" />
+                    <label className="block text-sm font-medium text-muted-foreground">Email</label>
+                    <input value={form.email} onChange={(e)=>setForm({...form, email: e.target.value})} className="mt-1 w-full rounded-md border border-border shadow-sm p-2 bg-input text-foreground" />
                   </div>
+
                   <div className="flex justify-end">
-                    <button onClick={save} className="px-4 py-2 bg-blue-600 text-white rounded-md">Guardar</button>
+                    <button onClick={save} className="px-4 py-2 bg-primary text-white rounded-md">Guardar</button>
                   </div>
                 </div>
               )}
 
-              {/* If this user is a professional, show editable professional profile from localStorage */}
               <div className="mt-6">
                 <h3 className="text-lg font-semibold">Perfil profesional</h3>
                 <ProfessionalEditor userEmail={user.email} />
@@ -92,8 +132,6 @@ export default function ProfilePage() {
 
 function ProfessionalEditor({ userEmail }: { userEmail: string }) {
   const [prof, setProf] = useState<any>(null)
-  const [editing, setEditing] = useState(false)
-  const [form, setForm] = useState<any>({})
 
   useEffect(() => {
     try {
@@ -101,72 +139,29 @@ function ProfessionalEditor({ userEmail }: { userEmail: string }) {
       if (!raw) return
       const arr = JSON.parse(raw)
       let p = arr.find((x:any) => x.email === userEmail)
-      if (!p && userEmail) {
-        // try to match by name as a fallback for older entries
-        p = arr.find((x:any) => x.name && x.name.toLowerCase() === (userEmail.split('@')[0] || '').toLowerCase())
-      }
+      if (!p && userEmail) p = arr.find((x:any) => x.name && x.name.toLowerCase() === (userEmail.split('@')[0] || '').toLowerCase())
       if (!p && arr.length === 1) p = arr[0]
-      if (p) {
-        // if found and missing email, attach it to allow consistent lookup
-        if (!p.email && userEmail) {
-          const idx = arr.findIndex((x:any) => x.id === p.id)
-          if (idx >= 0) {
-            arr[idx] = {...arr[idx], email: userEmail}
-            localStorage.setItem('servify_professionals', JSON.stringify(arr))
-            window.dispatchEvent(new CustomEvent('servify:professionals:updated'))
-            p = arr[idx]
-          }
-        }
-        setProf(p)
-        setForm({...p})
-      }
-    } catch {}
+      if (p) setProf(p)
+    } catch (e) { console.warn(e) }
   }, [userEmail])
 
-  const save = () => {
-    try {
-      const raw = localStorage.getItem('servify_professionals')
-      if (!raw) return
-      const arr = JSON.parse(raw)
-      const idx = arr.findIndex((x:any) => x.id === prof.id)
-      if (idx >= 0) {
-        arr[idx] = {...arr[idx], ...form}
-        localStorage.setItem('servify_professionals', JSON.stringify(arr))
-        window.dispatchEvent(new CustomEvent('servify:professionals:updated'))
-        setProf(arr[idx])
-        setEditing(false)
-      }
-    } catch (e) { console.warn(e) }
-  }
-
-  if (!prof) return <p className="text-sm text-gray-600">No se encontró perfil profesional asociado.</p>
+  if (!prof) return <p className="text-sm text-muted-foreground">No se encontró perfil profesional asociado.</p>
 
   return (
-    <div className="mt-4 bg-gray-50 p-4 rounded-md">
-      {!editing ? (
+    <div className="mt-4 bg-card p-4 rounded-md">
+      <div className="flex items-center space-x-3">
+        <div className="h-14 w-14 rounded-md overflow-hidden bg-muted">
+          {prof.photo ? <img src={prof.photo} alt={prof.name} className="h-full w-full object-cover" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/placeholder.png'}} /> : <div className="h-full w-full flex items-center justify-center">{(prof.name||'P').slice(0,2)}</div>}
+        </div>
         <div>
-          <p className="font-medium">{prof.name}</p>
-          <p className="text-sm text-gray-600">{prof.profession}</p>
+          <p className="font-medium text-foreground">{prof.name}</p>
+          <p className="text-sm text-muted-foreground">{prof.profession}</p>
           <p className="text-sm mt-2">{prof.hourlyRate}</p>
-          <div className="mt-3">
-            <button onClick={()=>setEditing(true)} className="px-3 py-2 border rounded-md">Editar perfil profesional</button>
-          </div>
         </div>
-      ) : (
-        <div className="space-y-3">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Profesión</label>
-            <input value={form.profession} onChange={(e)=>setForm({...form, profession: e.target.value})} className="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Precio por hora</label>
-            <input value={form.hourlyRate} onChange={(e)=>setForm({...form, hourlyRate: e.target.value})} className="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2" />
-          </div>
-          <div className="flex justify-end">
-            <button onClick={save} className="px-4 py-2 bg-blue-600 text-white rounded-md">Guardar</button>
-          </div>
-        </div>
-      )}
+      </div>
+      <div className="mt-3">
+        <button onClick={()=>window.alert('Editor simplificado. Restaurar edición completa más tarde.')} className="px-3 py-2 border rounded-md">Editar perfil profesional</button>
+      </div>
     </div>
   )
 }

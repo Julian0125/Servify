@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Star, MapPin, Clock, Shield, MessageSquare, Phone, ChevronLeft, ChevronRight, Crown, Wrench, Zap, Paintbrush, GraduationCap, Home, Camera, Code, Scissors, Users, Briefcase, Heart, Calculator, Leaf, Video, Coffee, Smile, Ruler, Plus, TrendingUp, Globe } from 'lucide-react'
+import { Star, MapPin, Clock, Shield, MessageSquare, ChevronLeft, ChevronRight, Crown, Wrench, Zap, Paintbrush, GraduationCap, Home, Camera, Code, Scissors, Users, Briefcase, Heart, Calculator, Leaf, Video, Coffee, Smile, Ruler, Plus, TrendingUp, Globe } from 'lucide-react'
+import showToast from '../../utils/toast'
 
 function getIconAndBg(profession?: string) {
   const raw = (profession || '').toLowerCase()
@@ -135,13 +136,32 @@ function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { on
       </div>
 
         <div className="p-5 pt-4 border-t border-gray-100 flex gap-2">
-        <button className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            try {
+              const token = localStorage.getItem('servify_token')
+              if (!token) {
+                showToast('Debe iniciar sesion para contactar al profesional', 'error')
+                return
+              }
+              if (!professional.phone) {
+                showToast('El profesional no tiene teléfono disponible', 'info')
+                return
+              }
+              const digits = String(professional.phone).replace(/\D/g, '')
+              const text = `Hola ${professional.name}, estoy interesado en tu servicio de ${professional.profession}.`
+              const waUrl = `https://wa.me/${digits}?text=${encodeURIComponent(text)}`
+              window.open(waUrl, '_blank')
+            } catch (err) {
+              // fallback: notify
+              showToast('No se pudo abrir WhatsApp', 'error')
+            }
+          }}
+          className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium ${professional.phone ? 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50' : 'text-gray-400 bg-white border border-gray-200 opacity-60'} rounded-lg transition-colors`}
+        >
           <MessageSquare className="h-4 w-4" />
-          Mensaje
-        </button>
-        <button className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-          <Phone className="h-4 w-4" />
-          Contactar
+          WhatsApp
         </button>
       </div>
     </div>
@@ -168,18 +188,18 @@ export function ProfessionalProfiles({ professionals, onViewAll }: ProfessionalP
       )
 
   return (
-    <section id="profesionales" className="py-16 lg:py-24">
+    <section id="profesionales" className="py-16 lg:py-24 bg-background">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
-            <span className="inline-block px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full mb-4">
+            <span className="inline-block px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full mb-4">
               Profesionales Destacados
             </span>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Los mejor calificados cerca de ti
             </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl">
+            <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
               Profesionales verificados con las mejores resenas de la comunidad. 
               Ordenados por cercania y calificacion.
             </p>
@@ -190,7 +210,7 @@ export function ProfessionalProfiles({ professionals, onViewAll }: ProfessionalP
             <button
               onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
               disabled={currentPage === 0}
-              className="inline-flex items-center justify-center h-10 w-10 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center h-10 w-10 text-foreground bg-card border border-border rounded-lg hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -200,7 +220,7 @@ export function ProfessionalProfiles({ professionals, onViewAll }: ProfessionalP
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages - 1, p + 1))}
               disabled={currentPage === totalPages - 1}
-              className="inline-flex items-center justify-center h-10 w-10 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center h-10 w-10 text-foreground bg-card border border-border rounded-lg hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronRight className="h-4 w-4" />
             </button>

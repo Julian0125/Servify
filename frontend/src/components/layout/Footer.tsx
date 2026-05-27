@@ -29,18 +29,18 @@ const navigation = {
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200">
+    <footer className="bg-background border-t border-border">
       <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8 lg:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
           {/* Brand */}
           <div className="col-span-2">
             <a href="/" className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
                 <Wrench className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">Servify</span>
+              <span className="text-xl font-bold text-foreground">Servify</span>
             </a>
-            <p className="mt-4 text-sm text-gray-600 max-w-xs">
+            <p className="mt-4 text-sm text-muted-foreground max-w-xs">
               Marketplace de servicios profesionales que conecta trabajadores independientes 
               con hogares en Bucaramanga y su area metropolitana.
             </p>
@@ -52,9 +52,9 @@ export function Footer() {
                 <input
                   type="email"
                   placeholder="tu@email.com"
-                  className="flex-1 max-w-[200px] px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 max-w-[200px] px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
+                <button className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors">
                   Suscribir
                 </button>
               </div>
@@ -63,11 +63,11 @@ export function Footer() {
 
           {/* Platform links */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900">Plataforma</h3>
+            <h3 className="text-sm font-semibold text-foreground">Plataforma</h3>
             <ul className="mt-4 space-y-3">
               {navigation.platform.map((item) => (
                 <li key={item.name}>
-                  <a href={item.href} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                  <a href={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {item.name}
                   </a>
                 </li>
@@ -77,7 +77,7 @@ export function Footer() {
 
           {/* Company links */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900">Empresa</h3>
+            <h3 className="text-sm font-semibold text-foreground">Empresa</h3>
             <ul className="mt-4 space-y-3">
               {navigation.company.map((item) => (
                 <li key={item.name}>
@@ -91,7 +91,7 @@ export function Footer() {
 
           {/* Legal links */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900">Legal</h3>
+            <h3 className="text-sm font-semibold text-foreground">Legal</h3>
             <ul className="mt-4 space-y-3">
               {navigation.legal.map((item) => (
                 <li key={item.name}>
@@ -105,9 +105,9 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900">Contacto</h3>
+            <h3 className="text-sm font-semibold text-foreground">Contacto</h3>
             <ul className="mt-4 space-y-3">
-              <li className="flex items-center gap-2 text-sm text-gray-600">
+              <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
                 <span>Calle 20 #31-23, Bucaramanga</span>
               </li>
@@ -129,7 +129,7 @@ export function Footer() {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white transition-colors"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted text-muted-foreground hover:bg-primary hover:text-white transition-colors"
                   >
                     <Icon className="h-4 w-4" />
                     <span className="sr-only">{item.name}</span>
@@ -141,12 +141,12 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
+        <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} Servify S.A.S. Todos los derechos reservados.
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Codigo CIIU: 6201 - Actividades de desarrollo de sistemas informaticos
             </p>
           </div>

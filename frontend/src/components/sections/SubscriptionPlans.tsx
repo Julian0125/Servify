@@ -42,17 +42,17 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
   const [selectedPlan, setSelectedPlan] = useState<any | null>(null)
 
   return (
-    <section id="planes" className="py-16 lg:py-24 bg-gray-50">
+    <section id="planes" className="py-16 lg:py-24 bg-background">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         {/* Section header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="inline-block px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full mb-4">
+          <span className="inline-block px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full mb-4">
             Planes de Suscripcion
           </span>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Elige el plan perfecto para ti
           </h2>
-          <p className="mt-4 text-lg text-gray-600">
+          <p className="mt-4 text-lg text-muted-foreground">
             Suscribete y comienza a recibir clientes desde el primer dia. 
             Acceso gratuito para clientes que buscan servicios.
           </p>
@@ -72,10 +72,10 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
             return (
               <div
                 key={plan.id}
-                className={`relative flex flex-col bg-white rounded-2xl shadow-sm border ${
+                className={`relative flex flex-col bg-card rounded-2xl shadow-sm border ${
                   plan.highlighted
-                    ? 'border-blue-500 shadow-lg scale-105 z-10'
-                    : 'border-gray-200'
+                      ? 'border-primary shadow-lg scale-105 z-10'
+                      : 'border-border'
                 }`}
               >
                 {plan.highlighted && (
@@ -87,26 +87,26 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
                 )}
 
                 <div className="p-6 text-center border-b border-gray-100">
-                  <div className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl ${
-                    plan.highlighted ? 'bg-blue-600' : 'bg-gray-100'
+                    <div className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl ${
+                    plan.highlighted ? 'bg-primary' : 'bg-muted'
                   }`}>
-                    <Icon className={`h-7 w-7 ${plan.highlighted ? 'text-white' : 'text-gray-700'}`} />
+                    <Icon className={`h-7 w-7 ${plan.highlighted ? 'text-white' : 'text-muted-foreground'}`} />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900">{plan.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{plan.description}</p>
+                  <h3 className="text-xl font-semibold text-foreground">{plan.name}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{plan.description}</p>
                 </div>
 
                 <div className="p-6 flex-1">
                   <div className="text-center mb-6">
-                      <div className="text-4xl font-bold text-gray-900">{formatPrice(price)}</div>
-                      <p className="text-sm text-gray-500">/mes</p>
+                        <div className="text-4xl font-bold text-foreground">{formatPrice(price)}</div>
+                        <p className="text-sm text-muted-foreground">/mes</p>
                   </div>
 
                   <ul className="space-y-3">
                     {plan.features.map((feature: string) => (
                       <li key={feature} className="flex items-start gap-3 text-sm">
                         <Check className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
-                        <span className="text-gray-600">{feature}</span>
+                        <span className="text-muted-foreground">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -115,8 +115,8 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
                 <div className="p-6 pt-0">
                   <button onClick={() => setSelectedPlan(plan)} className={`w-full py-3 px-4 text-sm font-medium rounded-lg transition-colors ${
                     plan.highlighted
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                      ? 'bg-primary text-white hover:bg-primary/90'
+                      : 'bg-card text-foreground border border-border hover:bg-muted'
                   }`}>
                     Suscribirse
                   </button>
