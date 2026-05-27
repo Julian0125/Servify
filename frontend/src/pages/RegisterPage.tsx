@@ -63,6 +63,7 @@ export default function RegisterPage({ categories }: RegisterPageProps) {
           localStorage.setItem('servify_token', res.token)
           if ((res as any).expiresAt) localStorage.setItem('servify_token_expires', String((res as any).expiresAt))
           localStorage.setItem('servify_user', JSON.stringify(res.user || {}))
+          window.dispatchEvent(new CustomEvent('servify:auth:updated'))
           showToast('Cuenta creada correctamente', 'success')
           window.location.hash = '#profile'
           return
@@ -90,6 +91,7 @@ export default function RegisterPage({ categories }: RegisterPageProps) {
           // Ensure name is saved if user provided it in the form
           if (name) userObj.name = name
           localStorage.setItem('servify_user', JSON.stringify(userObj))
+          window.dispatchEvent(new CustomEvent('servify:auth:updated'))
           showToast('Plan seleccionado y cuenta creada. Completa tu perfil profesional.', 'success')
           setStep(3)
           return
@@ -141,6 +143,7 @@ export default function RegisterPage({ categories }: RegisterPageProps) {
               if ((authRes as any).expiresAt) localStorage.setItem('servify_token_expires', String((authRes as any).expiresAt))
               const userObj = { ...(authRes.user || {}), role }
               localStorage.setItem('servify_user', JSON.stringify(userObj))
+              window.dispatchEvent(new CustomEvent('servify:auth:updated'))
             }
           }
         } catch (e) {
@@ -167,6 +170,20 @@ export default function RegisterPage({ categories }: RegisterPageProps) {
       } finally { setLoading(false) }
     }
   }
+
+  // On mount, check if user was redirected from a plan CTA
+  useState(() => {
+    try {
+      const raw = localStorage.getItem('servify_register_pref')
+      if (raw) {
+        const pref = JSON.parse(raw)
+        if (pref?.role === 'professional') setRole('professional')
+        if (pref?.plan) setSelectedPlan(String(pref.plan))
+        // leave step at 1 so user fills personal info first; remove pref
+        localStorage.removeItem('servify_register_pref')
+      }
+    } catch (e) { /* ignore */ }
+  })
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">

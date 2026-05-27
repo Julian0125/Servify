@@ -12,7 +12,6 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import SelectPlanPage from './pages/SelectPlanPage'
 import ProfilePage from './pages/ProfilePage'
-import AdminProfessionals from './pages/AdminProfessionals'
 import { api } from './services/api'
 import type { Professional, Category, SubscriptionPlan, BusinessMetrics } from './types'
 
@@ -356,10 +355,46 @@ function App() {
     window.addEventListener('hashchange', handler)
     return () => window.removeEventListener('hashchange', handler)
   }, [])
+
+  // Listen for auth updates (register/login/logout) so app state reflects localStorage
+  useEffect(() => {
+    const onAuth = () => {
+      try {
+        const raw = localStorage.getItem('servify_user')
+        setUser(raw ? JSON.parse(raw) : null)
+      } catch { setUser(null) }
+      // after auth updated, try to restore scroll to where Plans used to be
+      try {
+        setTimeout(() => {
+          const target = document.getElementById('planes')
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            return
+          }
+          const rawY = sessionStorage.getItem('servify_scroll_before_auth')
+          if (rawY) {
+            const y = Number(rawY)
+            if (!Number.isNaN(y)) window.scrollTo({ top: y, left: 0, behavior: 'smooth' })
+            sessionStorage.removeItem('servify_scroll_before_auth')
+          }
+        }, 200)
+      } catch {}
+    }
+    window.addEventListener('servify:auth:updated', onAuth)
+    return () => window.removeEventListener('servify:auth:updated', onAuth)
+  }, [])
+
+  // Save scroll position before navigating to the login screen
+  useEffect(() => {
+    const saveBeforeLogin = () => { try { sessionStorage.setItem('servify_scroll_before_auth', String(window.scrollY)) } catch {} }
+    const links = Array.from(document.querySelectorAll('a[href="#login"]'))
+    for (const a of links) a.addEventListener('click', saveBeforeLogin)
+    return () => { for (const a of links) a.removeEventListener('click', saveBeforeLogin) }
+  }, [])
   // Scroll to top only for full-page route hashes (not in-page anchors)
   useEffect(() => {
     try {
-      const pageRoutes = ['#login', '#register', '#select-plan', '#profile', '#admin']
+      const pageRoutes = ['#login', '#register', '#select-plan', '#profile']
       if (pageRoutes.includes(routeHash)) {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
       }
@@ -550,14 +585,13 @@ function App() {
           if (hash === '#register') return <RegisterPage categories={categories} />
           if (hash === '#select-plan') return <SelectPlanPage />
           if (hash === '#profile') return <ProfilePage />
-          if (hash === '#admin') return <AdminProfessionals />
           return (
             <>
               <Hero />
               <ServiceCategories categories={categories} onSearch={handleSearch} onViewAll={handleViewAll} />
               <ProfessionalProfiles professionals={professionals} onViewAll={handleViewAll} />
               <HowItWorks />
-              <SubscriptionPlans plans={plans} />
+              {!user && <SubscriptionPlans plans={plans} />}
               <BusinessModel metrics={businessMetrics} />
               <CTA />
             </>
@@ -568,11 +602,7 @@ function App() {
       <Footer />
       
       
-      {usingMockData && (
-        <div className="fixed bottom-4 right-4 bg-yellow-500 text-yellow-900 px-4 py-2 rounded-lg shadow-lg text-sm font-medium">
-          Modo Demo - Backend no conectado
-        </div>
-      )}
+      {/* demo banner removed per UX request */}
     </div>
   )
 }

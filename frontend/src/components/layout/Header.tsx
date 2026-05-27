@@ -52,7 +52,7 @@ export function Header({ user, onLogout }: HeaderProps) {
         </div>
 
         <div className="hidden lg:flex lg:gap-x-8">
-          {navigation.map((item) => (
+          {navigation.filter(item => !(user && item.name === 'Planes')).map((item) => (
             <a
               key={item.name}
               href={item.href}
@@ -61,7 +61,6 @@ export function Header({ user, onLogout }: HeaderProps) {
               {item.name}
             </a>
           ))}
-          <a href="#admin" className="text-sm font-medium text-muted-foreground hover:text-foreground">Admin</a>
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
@@ -80,10 +79,10 @@ export function Header({ user, onLogout }: HeaderProps) {
       </nav>
 
       {/* Mobile menu */}
-      {mobileMenuOpen && (
+          {mobileMenuOpen && (
         <div className="lg:hidden">
           <div className="space-y-1 px-4 pb-4 pt-2">
-            {navigation.map((item) => (
+            {navigation.filter(item => !(user && item.name === 'Planes')).map((item) => (
                 <a
                 key={item.name}
                 href={item.href}

@@ -1,5 +1,4 @@
-import { useMemo, useState } from 'react'
-import SubscriptionModal from '../ui/SubscriptionModal'
+import { useMemo } from 'react'
 import { Check, Crown, Sparkles, Zap } from 'lucide-react'
 import type { SubscriptionPlan } from '../../types'
 
@@ -39,7 +38,7 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
       }
     ]
   }, [plans])
-  const [selectedPlan, setSelectedPlan] = useState<any | null>(null)
+  // no modal flow: redirect to RegisterPage as professional when subscribing
 
   return (
     <section id="planes" className="py-16 lg:py-24 bg-background">
@@ -113,7 +112,12 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
                 </div>
 
                 <div className="p-6 pt-0">
-                  <button onClick={() => setSelectedPlan(plan)} className={`w-full py-3 px-4 text-sm font-medium rounded-lg transition-colors ${
+                  <button onClick={() => {
+                      try {
+                        localStorage.setItem('servify_register_pref', JSON.stringify({ role: 'professional', plan: plan.id }))
+                      } catch {}
+                      window.location.hash = '#register'
+                    }} className={`w-full py-3 px-4 text-sm font-medium rounded-lg transition-colors ${
                     plan.highlighted
                       ? 'bg-primary text-white hover:bg-primary/90'
                       : 'bg-card text-foreground border border-border hover:bg-muted'
@@ -147,9 +151,7 @@ export function SubscriptionPlans({ plans }: SubscriptionPlansProps) {
           </div>
         </div>
       </div>
-      {selectedPlan && (
-        <SubscriptionModal open={!!selectedPlan} plan={selectedPlan} onClose={() => setSelectedPlan(null)} />
-      )}
+      {/* subscription now redirects to registration as professional */}
     </section>
   )
 }

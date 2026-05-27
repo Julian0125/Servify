@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Star, MapPin, Clock, Shield, MessageSquare, ChevronLeft, ChevronRight, Crown, Wrench, Zap, Paintbrush, GraduationCap, Home, Camera, Code, Scissors, Users, Briefcase, Heart, Calculator, Leaf, Video, Coffee, Smile, Ruler, Plus, TrendingUp, Globe } from 'lucide-react'
+import { MapPin, Clock, Shield, MessageSquare, ChevronLeft, ChevronRight, Crown, Wrench, Zap, Paintbrush, GraduationCap, Home, Camera, Code, Scissors, Users, Briefcase, Heart, Calculator, Leaf, Video, Coffee, Smile, Ruler, Plus, TrendingUp, Globe } from 'lucide-react'
 import showToast from '../../utils/toast'
 
 function getIconAndBg(profession?: string) {
@@ -68,6 +68,14 @@ interface ProfessionalCardProps {
 }
 
 function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { onOpen?: (p: ExtendedProfessional) => void }) {
+  const renderStars = (r: number) => {
+    const full = Math.round(Math.max(0, Math.min(5, Number(r || 0))))
+    const stars = [] as JSX.Element[]
+    for (let i = 0; i < 5; i++) {
+      stars.push(<span key={i} className={`text-yellow-400 text-sm ${i < full ? '' : 'opacity-40'}`}>★</span>)
+    }
+    return <div className="inline-flex items-center gap-1">{stars}</div>
+  }
   return (
     <div onClick={() => onOpen?.(professional)} className={`h-full flex flex-col bg-white rounded-xl shadow-sm border transition-all hover:shadow-lg ${
       professional.premium ? 'border-blue-200' : 'border-gray-100'
@@ -118,9 +126,9 @@ function ProfessionalCard({ professional, onOpen }: ProfessionalCardProps & { on
 
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2 text-gray-600">
-            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-            <span className="font-medium text-gray-900">{professional.rating}</span>
-            <span>({professional.reviews} resenas)</span>
+            {renderStars(Number(professional.rating))}
+            <span className="sr-only">{professional.rating} de 5</span>
+            <span>({professional.reviews} reseñas)</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-600">
